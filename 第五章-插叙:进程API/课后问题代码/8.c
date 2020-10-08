@@ -19,14 +19,15 @@ int main() {
     int ppid = fork();
     if (ppid == 0) {
       char *msg = "Hello!\n";
+//      关闭多余管道端
+      close(fd[0]);
       write(fd[1], msg, sizeof(char) * strlen(msg));
-      close(fd[1]);
     } else if (ppid > 0) {
       wait(NULL);
       char asw[10];
+      close(fd[1]);
       int res = read(fd[0], asw, sizeof(char) * 10);
       printf("size:%d, %s", res, asw);
-      close(fd[0]);
     }
   }
   return 0;
