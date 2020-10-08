@@ -9,12 +9,14 @@
 #include <unistd.h>
 
 int main() {
-  int pid = fork();
   int fd[2];
   if (pipe(fd) < 0) {
     perror("pipe");
     exit(1);
   }
+
+
+  int pid = fork();
   if (pid == 0) {
     int ppid = fork();
     if (ppid == 0) {
