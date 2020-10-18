@@ -1,10 +1,13 @@
 //
 // Created by pjs on 2020/10/18.
 //
+#define _GNU_SOURCE //sched_setaffinity
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sched.h>
+
 
 #define PAGESIZE 4096
 
@@ -26,6 +29,15 @@ int main(int argc, char *argv[]) {
     }
     int jump = PAGESIZE / sizeof(int);
     int *a = (int *) malloc(nPages * jump * sizeof(int));
+
+    cpu_set_t set;
+    // 将cpu 0 添加到集合
+    CPU_SET(0, &set);
+    //绑定cpu核心
+    if (sched_setaffinity(getpid(), sizeof(cpu_set_t), &set) == -1) {
+        perror("sched_setaffinity");
+        exit(EXIT_FAILURE);
+    }
 
     uint64_t start, end;
     unsigned cycles_low, cycles_high, cycles_low1, cycles_high1;

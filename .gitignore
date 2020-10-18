@@ -6,3 +6,4 @@ cmake-build-debug/
 *.test
 test.*
 test
+out.txt

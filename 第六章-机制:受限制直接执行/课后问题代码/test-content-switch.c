@@ -10,7 +10,6 @@
 #include "string.h"
 #include "sys/time.h"
 #include "unistd.h"
-#include <sched.h>
 
 
 int main() {
