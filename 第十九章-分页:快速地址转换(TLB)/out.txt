@@ -1,0 +1,12 @@
+time: 5.362000 clock cycles, page: 1
+time: 11.671000 clock cycles, page: 2
+time: 8.481000 clock cycles, page: 4
+time: 8.748500 clock cycles, page: 8
+time: 15.159000 clock cycles, page: 16
+time: 24.302250 clock cycles, page: 32
+time: 38.753906 clock cycles, page: 64
+time: 26.996391 clock cycles, page: 128
+time: 26.909407 clock cycles, page: 256
+time: 25.729723 clock cycles, page: 512
+time: 26.241400 clock cycles, page: 1024
+time: 25.677246 clock cycles, page: 2048
