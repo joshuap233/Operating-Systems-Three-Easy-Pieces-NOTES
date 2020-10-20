@@ -13,7 +13,7 @@ with open('./test.txt') as f:
         addr = re.findall(r" ([\dabcdef]*),", line)
         if len(addr) == 1:
             bit_length = int(addr[0], 16).bit_length()
-            page = int(addr[0], 16) >> (52 - (64 - bit_length))
+            page = int(addr[0], 16) >> (36 - (48 - bit_length))
             res.append(page)
     addr_list = ','.join([str(page) for page in res])
 
@@ -35,8 +35,8 @@ policies = ['FIFO', 'LRU', 'OPT', 'UNOPT', 'RAND', 'CLOCK']
 
 plot = []
 
+cacheSize = 10
 for policy in policies:
-    cacheSize = 10
     hitRates = [0.00] * cacheSize
     for i in range(1, cacheSize + 1):
         h, m, hitRate = computer_answer(i, policy)
@@ -44,6 +44,8 @@ for policy in policies:
     plot.extend([np.array(range(cacheSize)), np.array(hitRates)])
 
 plt.plot(*plot)
+plt.xlim(1, cacheSize)
+
 plt.legend(policies)
 plt.xlabel(u'cache size(page)')
 plt.ylabel(u'hit rate')
