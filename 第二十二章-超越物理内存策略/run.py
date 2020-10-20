@@ -13,7 +13,7 @@ with open('./test.txt') as f:
         addr = re.findall(r" ([\dabcdef]*),", line)
         if len(addr) == 1:
             bit_length = int(addr[0], 16).bit_length()
-            page = int(addr[0], 16) >> (36 - (48 - bit_length))
+            page = int(addr[0], 16) >> (39 - (48 - bit_length))
             res.append(page)
     addr_list = ','.join([str(page) for page in res])
 
