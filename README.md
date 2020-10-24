@@ -5,6 +5,9 @@
 这本书不错,有能力的去看英文原版:
 http://pages.cs.wisc.edu/~remzi/OSTEP/
 
+书籍翻译:
+https://github.com/remzi-arpacidusseau/ostep-translations
+
 ## 代码无法运行
 本书代码测试环境为 Intel x64/Ubuntu ,部分代码不兼容 AMD/Windows,
 

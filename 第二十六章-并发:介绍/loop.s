@@ -2,5 +2,5 @@
 .top
 sub  $1,%dx
 test $0,%dx     
-jgte .top         
+jgte .top
 halt
