@@ -16,4 +16,4 @@ Python3版本: `Python 3.8.5`
 
 第三方Python3库: `pip3 install matplotlib numpy`
 
-遇到无法运行的代码请检查上述情况
+遇到无法运行的代码请检查是否为版本问题
