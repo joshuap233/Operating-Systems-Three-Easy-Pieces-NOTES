@@ -8,7 +8,6 @@
 #include <pthread.h>
 #include <assert.h>
 #include <stdlib.h>
-#include <sys/time.h>
 
 #define Pthread_mutex_init(mutex, attr) assert(pthread_mutex_init(mutex, attr) == 0)
 

@@ -15,6 +15,7 @@ for i in x:
     bx1 = 2
     bx2 = 2
     # 理论执行指令数 / 实际执行指令数
+    # 简单的假设cpu执行每条指令的时钟周期相同,实际并不是这样
     rate = (11 * bx1 + 1 + 11 * bx2 + 1) / compute(i, bx1, bx2)
     y.append(rate)
 
