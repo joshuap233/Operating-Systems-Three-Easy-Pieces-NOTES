@@ -16,4 +16,5 @@ while all_:
 plt.legend()
 plt.xlabel('cpu count')
 plt.ylabel('time')
+plt.savefig('4.png', dpi=227)
 plt.show()

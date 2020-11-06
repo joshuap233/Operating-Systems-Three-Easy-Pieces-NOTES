@@ -3,15 +3,20 @@
 //
 
 #include <stdio.h>
-#include "counter.h"
+#include "linkList.h"
 #include "../timer.h"
 
 #define MAX_WORKER 8
 
-void *worker(void *c) {
-    counter_t *counter = (counter_t *) c;
+typedef struct {
+    list_t *list;
+} threadArgs;
+
+void *worker(void *tArgs) {
+    threadArgs *args = (threadArgs *) tArgs;
     for (int i = 0; i < 10000; i++) {
-        increment(counter);
+        list_insert(args->list, i);
+        int status = lookup(args->list, i);
     }
     return NULL;
 }
@@ -19,22 +24,24 @@ void *worker(void *c) {
 int main() {
     double start, end;
     pthread_t ps[MAX_WORKER];
-    counter_t c;
-
+    list_t list;
+    threadArgs tArgs;
     for (int t = 1; t <= MAX_WORKER; t++) {
-        init_counter(&c);
+        list_init(&list);
+        tArgs.list = &list;
 
         start = Time_GetSeconds();
 
         for (int i = 0; i < t; i++) {
-            Pthread_create(&ps[i], NULL, &worker, &c);
+            Pthread_create(&ps[i], NULL, &worker, &tArgs);
         }
         for (int i = 0; i < t; i++) {
             Pthread_join(ps[i], NULL);
         }
+
         end = Time_GetSeconds();
         printf("%f\n", end - start);
     }
-
+    free_list(&list);
     return 0;
 }
