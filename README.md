@@ -26,7 +26,7 @@ https://github.com/remzi-arpacidusseau/ostep-translations
 ## 代码无法运行
 本书代码测试环境为 Intel x64/Ubuntu ,部分代码不兼容 AMD/Windows,
 
-gcc版本为:`gcc version 9.3.0 (Ubuntu 9.3.0-17ubuntu1~20.04) `
+gcc版本为:`gcc version 9.3.0 (Ubuntu 9.3.0-17ubuntu1~20.04)`
 
 Python2版本:`Python 2.7.18`
 
