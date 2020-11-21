@@ -24,7 +24,7 @@ http://pages.cs.wisc.edu/~remzi/OSTEP/
 https://github.com/remzi-arpacidusseau/ostep-translations
 
 ## 代码无法运行
-本书代码测试环境为 Intel x64/Ubuntu ,部分代码不兼容 AMD/Windows,
+本书代码测试环境为 Intel x64/Ubuntu
 
 gcc版本为:`gcc version 9.3.0 (Ubuntu 9.3.0-17ubuntu1~20.04)`
 
