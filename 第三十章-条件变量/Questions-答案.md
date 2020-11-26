@@ -138,4 +138,4 @@ Consumer consumption:
 11.最后查看 main-cvs-while-extra-unlock.c。在向缓冲区添加或取出元素时释放锁时会出现什么问题？ 
 给定睡眠字符串来引起这类问题的发生？ 会造成什么不好的结果？
     
-    锁加在 do_get 和 do_fill 外面，这锁等于没加
+    do_get 和 do_fill 在锁外面，这锁等于没加
