@@ -90,7 +90,7 @@ producer should sleep at each point p0, p1, ..., p6. For example, the string
 p0 (before grabbing the lock), and then not at all each time through the loop.
 
 Now let's show the output of running one of these programs.  To begin, let's
-assume that the user runs with just one producer and one consumer. Let's not
+assume that the user  with just one producer and one consumer. Let's not
 add any sleeping at all (this is the default behavior). The buffer 
 size, in this example, is set to 2 (-m 2).
 
@@ -140,7 +140,7 @@ the following output (or something like it) on the screen:
   1 [u  2 f--- ]    c1
   0 [ --- *--- ]    c4
   0 [ --- *--- ]    c5
-  0 [ --- *--- ]    c6
+  0 [ --- *--- ]    c6runs
   1 [f--- uEOS ] [main: added end-of-stream marker]
   1 [f--- uEOS ]    c0
   1 [f--- uEOS ]    c1

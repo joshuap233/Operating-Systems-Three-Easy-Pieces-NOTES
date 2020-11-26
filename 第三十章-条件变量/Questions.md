@@ -23,8 +23,7 @@ shared buffer, and each consumer pausing at point c3 for a second, will take? ./
 any difference in the total time?
 6. Now change the location of the sleep to c6 (this models a consumer taking something off the queue and then doing something
 with it), again using a single-entry buffer. What time do you predict in this case? ./main-two-cvs-while -p 1 -c 3 -m 1
--C 0,0,0,0,0,0,1:0,0,0,0,0,0,1:0,0,0,0,0,0,1 -l 10
--v -t
+-C 0,0,0,0,0,0,1:0,0,0,0,0,0,1:0,0,0,0,0,0,1 -l 10 -v -t
 7. Finally, change the buffer size to 3 again (-m 3). What time do you
 predict now?
 8. Now let’s look at main-one-cv-while.c. Can you configure

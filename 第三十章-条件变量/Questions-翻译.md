@@ -1,49 +1,38 @@
 课后作业 (编码)
 
 通过本作业，您可以探索一些使用锁和条件变量的实际代码，以实现本章中讨论的各种形式的生产者/消费者队列。 
-您将查看真实的代码，以各种配置运行它，并使用它来了解什么有效，什么无效以及其他复杂性。 阅读 README 文件了解详细信息。
+您需要查看这些代码，以各种配置运行它，并使用它们来了解哪些方案有效，哪些无效，以及一些其他的问题。 阅读 README 文件了解详细信息。
 
-Questions：
+问题：
 
-1.我们的第一个问题集中在main-two-cvs-while.c（有效解决方案）上。 首先，研究代码。 您认为您了解运行该程序时应该怎么做吗？
+1.我们的第一个问题集中在 main-two-cvs-while.c（有效的解决方案）上。 
+首先，研究代码。 你认为你了解当你运行程序时会发生什么吗？
 
-2.指定一个生产者和一个消费者运行，并让生产者产生一些值。 
-缓冲区大小从1 开始，然后增加。较大的缓冲区如何改变代码的行为？
-What would you predict num full to be with different buffer sizes (e.g., -m 10) and different numbers of produced items
-(e.g., -l 100), when you change the consumer sleep string from
-default (no sleep) to -C 0,0,0,0,0,0,1?
+2.指定一个生产者和一个消费者运行，并让生产者产生一些元素。 
+缓冲区大小从 1 开始，然后增加。随着缓冲区大小增加，程序运行结果如何改变？
+当使用不同的缓冲区大小(例如 -m 10)，生产者生产不同的产品数量(例如 -l 100)，
+修改消费者的睡眠字符串(例如 -C 0,0,0,0,0,0,1)，full_num 的值如何变化？
 
-3.If possible, run the code on different systems (e.g., a Mac and Linux).
-Do you see different behavior across these systems?
-4.Let’s look at some timings. How long do you think the following execution, with one producer, three consumers, a single-entry
-shared buffer, and each consumer pausing at point c3 for a second, will take? ./main-two-cvs-while -p 1 -c 3 -m 1 -C
-0,0,0,1,0,0,0:0,0,0,1,0,0,0:0,0,0,1,0,0,0 -l 10 -v -t
+3.如果可能，请在其他系统（例如 Mac 和 Linux）上运行代码。 您在这些系统上看到不同的行为了吗？
 
-5.Now change the size of the shared buffer to 3 (-m 3). Will this make
-any difference in the total time?
+4.我们来看一些 timings。 对于一个生产者，三个消费者，大小为 1 的共享缓冲区以及每个消费者在 c3 点暂停一秒，您认需要执行多长时间？
+（./main-two-cvs-while -p 1 -c 3 -m 1 -C 0,0,0,1,0,0,0:0,0,0,1,0,0,0:0,0,0,1,0,0,0 -l 10 -v -t）
 
-6.Now change the location of the sleep to c6 (this models a consumer taking something off the queue and then doing something
-with it), again using a single-entry buffer. What time do you predict in this case? ./main-two-cvs-while -p 1 -c 3 -m 1
--C 0,0,0,0,0,0,1:0,0,0,0,0,0,1:0,0,0,0,0,0,1 -l 10
--v -t
+5.现在将共享缓冲区的大小更改为 3（-m 3）。 这对总时间有什么影响吗？
 
-7.Finally, change the buffer size to 3 again (-m 3). What time do you
-predict now?
+6.现在将睡眠点更改为 c6（这将模拟消费者从队列中取出某些东西然后对其进行处理），再次使用大小为 1 的缓冲区。
+在这种情况下，您预计运行多长时间? (./main-two-cvs-while -p 1 -c 3 -m 1 -C 0,0,0,1,0,0,0:0,0,0,1,0,0,0:0,0,0,1,0,0,0 -l 10 -v -t)
 
-8.Now let’s look at main-one-cv-while.c. Can you configure
-a sleep string, assuming a single producer, one consumer, and a
-buffer of size 1, to cause a problem with this code?
+7.最后再次将缓冲区大小更改为3（-m 3）。 您现在预计需要运行多长时间？
 
-9.Now change the number of consumers to two. Can you construct
-sleep strings for the producer and the consumers so as to cause a
-problem in the code?
+8.现在让我们看一下 main-one-cv-while.c。 您是否可以假设只有一个生产者，
+一个消费者和一个大小为 1 的缓冲区，配置一个睡眠字符串，让代码运行出现问题
 
-10.Now examine main-two-cvs-if.c. Can you cause a problem to
-happen in this code? Again consider the case where there is only
-one consumer, and then the case where there is more than one.
+9.现在将消费者数量更改为两个。 为生产者消费者配置睡眠字符串，从而使代码运行出现问题。
 
-11.Finally, examine main-two-cvs-while-extra-unlock.c. What
-problem arises when you release the lock before doing a put or a
-get? Can you reliably cause such a problem to happen, given the
-sleep strings? What bad thing can happen?
+10.现在查看 main-two-cvs-if.c。 您是否可以配置一些参数让代码运行出现问题？ 
+再次考虑只有一个消费者的情况，然后再考虑有一个以上消费者的情况。
+
+11.最后查看 main-cvs-while-extra-unlock.c。在向缓冲区添加或去除元素时释放锁时会出现什么问题？ 
+给定睡眠字符串来引起这类问题的发生？ 会造成什么不好的结果？
 
