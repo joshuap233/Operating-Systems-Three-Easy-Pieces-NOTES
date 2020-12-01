@@ -11,6 +11,10 @@
 #include <unistd.h>
 #include "common.h"
 
+#define MAX_CONNECTIONS 5
+#define PORT 8080
+#define HOST "127.0.0.1"
+
 typedef struct {
     struct sockaddr_in server_info;
     struct sockaddr_in client_info;
@@ -24,8 +28,8 @@ int main() {
     pthread_t s, c;
     struct sockaddr_in server_info, client_info = {
             .sin_family = PF_INET,
-            .sin_port = htons(8080),
-            .sin_addr.s_addr = inet_addr("127.0.0.1"),
+            .sin_port = htons(PORT),
+            .sin_addr.s_addr = inet_addr(HOST),
     };
 
     // sin_zero 必须清零
@@ -65,18 +69,19 @@ _Noreturn void *server(void *arg) {
     }
 
     assert(bind(socket_fd, (struct sockaddr *) &server_info, sizeof(server_info)) == 0);
-    //最大连接数为5
-    listen(socket_fd, 5);
-    new_socket_fd = accept(socket_fd, (struct sockaddr *) &client_info, &addrLen);
-    if (new_socket_fd == -1) {
-        perror("accept");
-        exit(1);
-    }
-
+    listen(socket_fd, MAX_CONNECTIONS);
     while (1) {
-        send(new_socket_fd, message, sizeof(message), 0);
-        recv(new_socket_fd, inputBuffer, sizeof(inputBuffer), 0);
-        printf("server recv：%s\n", inputBuffer);
+        new_socket_fd = accept(socket_fd, (struct sockaddr *) &client_info, &addrLen);
+        if (new_socket_fd == -1) {
+            perror("accept");
+            exit(1);
+        }
+
+        while (1) {
+            send(new_socket_fd, message, sizeof(message), 0);
+            recv(new_socket_fd, inputBuffer, sizeof(inputBuffer), 0);
+            printf("server recv：%s\n", inputBuffer);
+        }
     }
 }
 
