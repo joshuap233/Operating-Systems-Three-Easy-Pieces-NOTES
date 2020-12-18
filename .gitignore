@@ -8,4 +8,7 @@ test.*
 test
 out.txt
 Notes/
+node_modules/
+yarn.lock
+package.json
 原书勘误.md
