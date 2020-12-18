@@ -12,7 +12,7 @@ prompt> ./ffs.py -f in.example1 -c
 
 查看第第一个示例输出来了解基于 FFS 的分配原理。
 
-in.example1中的文件由以下命令组成：
+in.example1 中的文件由以下命令组成：
 
 dir /a
 dir /b
@@ -62,7 +62,7 @@ prompt>
 输出的第一部分向我们展示了模拟器的各种参数，从创建的 FFS 柱面组的数量到一些策略详细信息。
 但是输出的主要部分是实际分配图：
 
-      0000000000 0000000000 1111111111 2222222222
+      0000000000 0000000000 1111111111 2222222222plainplainplainplainplainplainplainplainplainplainplainplainplainplainplainplain
       0123456789 0123456789 0123456789 0123456789
 
 group inodes     data
@@ -81,7 +81,7 @@ group inodes     data
 每个组仅显示 inode 和数据块以及它们的分配方式。 如果它们是空闲的，则显示 -。
 否则，每个文件显示一个不同的符号。
 
-如果要查看符号到文件名的映射，则应使用-M标志：
+如果要查看符号到文件名的映射，则应使用-M 标志：
 
 ```shell script
 prompt> ./ffs.py -f in.example1 -c -M
@@ -106,9 +106,9 @@ f           21  /b/f           regular
 - 根 inode 在 inode 表的 Group 0 的第一个插槽中
 - root 数据块在分配的第一个数据块（Group 0）中找到 
 - 目录 /a 放置在组 1 中，目录 /b 放置在组 2 中
-- 每个常规文件的文件（节点和数据）与它们的父节点位于同一组中（根据FFS）
+- 每个常规文件的文件（节点和数据）与它们的父节点位于同一组中（根据 FFS）
 
-其余选项使您可以使用FFS和一些较小的变体。 他们是：
+其余选项使您可以使用 FFS 和一些较小的变体。 他们是：
 
 <pre>
 prompt> ./ffs.py -h
