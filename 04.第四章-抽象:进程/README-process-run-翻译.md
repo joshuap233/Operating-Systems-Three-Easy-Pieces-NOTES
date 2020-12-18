@@ -1,23 +1,30 @@
 这个程序叫process-run.py, 允许您查看进程状态在CPU上运行时的变化情况.
 如本章所述，进程可以处于几种不同的状态：
 
+<pre>
   运行(RUNNING) - 进程正在使用CPU
   就绪(READY)   - 进程现在可以使用CPU，但是其他进程正在使用
   等待(WAITING) - 进程正在等待I / O完成(例如，它向磁盘发出请求)
   完成(DONE)    - 过程执行完毕
+</pre>
 
 在本作业中，我们将看到这些进程状态如何随着程序运行而改变，从而更好地了解进程如何工作。
 
 要运行该程序并获取操作选项，请执行以下操作：
 
+```shell script
 prompt> ./process-run.py -h
+```
 
 如果这不起作用，请在命令前键入“ python”，如下所示：
 
+```shell script
 prompt> python process-run.py -h
+```
 
 您会看到的是：
 
+<pre>
 Usage: process-run.py [options]
 
 Options:
@@ -38,7 +45,7 @@ Options:
                         - IO_RUN_LATER: 自然切换到这个进程(例如:取决于进程切换行为)
   -c                    compute answers for me
   -p, --printstats      打印统计数据； 仅与-c参数一起使用是有效
-
+</pre>
 
 需要理解的最重要的是 PROCESS_LIST（由-l或--processlist参数指定），它精确指定每个正在运行的程序（或“进程”）将执行的操作。 一进程由指令组成，每个指令只能执行以下两项操作之一：
 - 使用cpu
@@ -46,6 +53,7 @@ Options:
 
 当一个进程使用CPU（完全不进行IO）时，它应该在CPU上的运行(RUNNING态）或准备运行(READY态)两个状态之间进行切换。 例如，下面是一个简单的例子，仅运行一个程序，而该程序仅使用CPU（不进行IO）。
 
+<pre>
 prompt> ./process-run.py -l 5:100 
 Produce a trace of what would happen when you run these processes:
 Process 0
@@ -60,11 +68,13 @@ Important behaviors:
   After IOs, the process issuing the IO will run LATER (when it is its turn)
 
 prompt> 
+</pre>
 
 我们指定的参数为"5：100"，这意味着程序应该由5条指令组成，并且每条指令为CPU指令的机会为100％。
 
 您可以使用-c标志查看该过程发生了什么，该参数为您计算答案：
 
+<pre>
 You can see what happens to the process by using the -c flag, which computes the
 answers for you:
 
@@ -75,11 +85,13 @@ Time     PID: 0        CPU        IOs
   3     RUN:cpu          1
   4     RUN:cpu          1
   5     RUN:cpu          1
+</pre>
 
 这个结果不是很有趣:这个进程只是处于运行态，然后就执行完成了，在整个运行过程中都使用CPU，因此在整个运行过程中都保持CPU忙碌，而不做任何I/Os。
 
 通过运行两个进程，让它稍微复杂一些：
 
+<pre>
 prompt> ./process-run.py -l 5:100,5:100
 Produce a trace of what would happen when you run these processes:
 Process 0
@@ -99,9 +111,11 @@ Process 1
 Important behaviors:
   Scheduler will switch when the current process is FINISHED or ISSUES AN IO
   After IOs, the process issuing the IO will run LATER (when it is its turn)
+</pre>
 
 在这种情况下，将运行两个不同的进程，每个进程仅使用CPU。 操作系统运行它们时会发生什么？让我们来看看: 
 
+<pre>
 prompt> ./process-run.py -l 5:100,5:100 -c
 Time     PID: 0     PID: 1        CPU        IOs
   1     RUN:cpu      READY          1
@@ -114,12 +128,13 @@ Time     PID: 0     PID: 1        CPU        IOs
   8        DONE    RUN:cpu          1
   9        DONE    RUN:cpu          1
  10        DONE    RUN:cpu          1
+</pre>
 
 正如您在上面看到的，首先运行“进程ID”(或“PID”)为0的进程，而进程1准备运行，但只能等待0完成。当0完成后,它就移动到“完成”状态,1进程开始运行。当1结束时，跟踪就完成了。
 
 在提出一些问题之前，让我们再看一个例子。 在此示例中，该进程仅发出I/O请求。 我们使用-L参数指定I/O以5个时钟周期完成
 
-
+<pre>
 prompt> ./process-run.py -l 3:0 -L 5
 Produce a trace of what would happen when you run these processes:
 Process 0
@@ -130,9 +145,11 @@ Process 0
 Important behaviors:
   System will switch when the current process is FINISHED or ISSUES AN IO
   After IOs, the process issuing the IO will run LATER (when it is its turn)
+</pre>
 
 你认为执行跟踪会是什么样的?让我们来看看:
 
+<pre>
 prompt> ./process-run.py -l 3:0 -L 5 -c
 Time     PID: 0        CPU        IOs
   1  RUN:io-start          1
@@ -151,19 +168,23 @@ Time     PID: 0        CPU        IOs
  14     WAITING                     1
  15     WAITING                     1
  16*       DONE
-
+</pre>
 
 如你所见，该程序仅处理三个I/O。 发出每个I/O时，进程进入等待状态，并且在设备忙于I/O时，CPU处于空闲状态。
 
 让我们打印一些统计信息（运行与上面相同的命令，但带有-p参数）以查看一些总体行为：
 
+<pre>
 Stats: Total Time 16
 Stats: CPU Busy 3 (18.75%)
 Stats: IO Busy  12 (75.00%)
+</pre>
 
 如你所见，跟踪了16个时钟周期，但CPU忙的时间不到20％。另一方面，IO设备非常繁忙。 通常，我们希望使所有设备保持忙碌状态，因为这样可以更好地利用资源。
 
 还有其他一些重要参数：
+
+<pre>
 There are a few other important flags:
   -s SEED, --seed=SEED  the random seed  
     this gives you way to create a bunch of different jobs randomly
@@ -183,6 +204,7 @@ There are a few other important flags:
     - IO_RUN_IMMEDIATE: switch to this process right now
     - IO_RUN_LATER: switch to this process when it is natural to 
       (e.g., depending on process-switching behavior)
+</pre>
 
 现在去回答本章后面的问题来了解更多。
 

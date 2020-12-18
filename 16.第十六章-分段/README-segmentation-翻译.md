@@ -6,7 +6,7 @@
 段0沿正方向（朝更高的地址）增长，而段1沿负方向增长。
 
 在视觉上，地址空间如下所示：
-
+<pre>
  --------------- virtual address 0
  |    seg0     |
  |             |
@@ -24,6 +24,7 @@
  |             |
  |    seg1     |
  |-------------| virtual address max (size of address space)
+</pre>
 
 您可能还记得分段的情况，每个分段都有一对基址/界限寄存器。
 因此，在这个问题中，存在两对基址/界限寄存器。 
@@ -36,7 +37,7 @@
 
 例如，要使用默认参数运行，输入：
 
-```
+<pre>
 prompt> ./segmentation.py 
 
 (or 
@@ -71,19 +72,19 @@ You should see this:
   (topbit=1). Note that the base/limit pairs given to you grow in different
   directions, depending on the segment, i.e., segment 0 grows in the positive
   direction, whereas segment 1 in the negative.  
-```
+</pre>
 
 然后，在你计算完虚拟地址转换后，使用“ -c”标志再次运行该程序。 
 您将看到以下内容（不包括冗余信息）：
 
-```
+<pre>
   Virtual Address Trace
     VA  0: 0x0000020b (decimal:  523) --> SEGMENTATION VIOLATION (SEG1)
     VA  1: 0x0000019e (decimal:  414) --> VALID in SEG0: 0x00001c88 (decimal: 7304)
     VA  2: 0x00000322 (decimal:  802) --> VALID in SEG1: 0x00001176 (decimal: 4470)
     VA  3: 0x00000136 (decimal:  310) --> VALID in SEG0: 0x00001c20 (decimal: 7200)
     VA  4: 0x000001e8 (decimal:  488) --> SEGMENTATION VIOLATION (SEG0)
-```
+</pre>
 
 如您所见，使用-c，该程序将为您转换地址，因此您可以检查是否了解使用分段的系统如何转换地址。
 
@@ -94,7 +95,7 @@ You should see this:
 
 您还可以使用一些参数来处理不同大小的地址空间和物理内存。 
 例如，要在小型系统中进行实验，可以输入：
-```
+<pre>
   prompt> ./segmentation.py -s 100 -a 16 -p 32
   ARG seed 0
   ARG address space size 16
@@ -114,7 +115,7 @@ You should see this:
     VA  2: 0x00000001 (decimal:    1) --> PA or segmentation violation?
     VA  3: 0x00000007 (decimal:    7) --> PA or segmentation violation?
     VA  4: 0x00000000 (decimal:    0) --> PA or segmentation violation?
-```
+</pre>
 
 它告诉程序物理内存为32字节, 生成使用16字节地址空间的虚拟地址。 
 如您所见，生成的虚拟地址很小（12、8、1、7和0）。 
@@ -132,17 +133,17 @@ If that doesn't make sense，请再读一遍-您必须弄清楚这是如何工�
 请注意，您可以通过在-a或-p标志传递的值上加上“ k”，“ m”甚至“ g”来指定更大的值，例如“千字节”，“兆字节”和“千兆字节” ”。 
 因此，如果要在32 MB的物理内存中设置1 MB的地址空间来执行某些转换，则可以输入：
 
-```
+```shell script
 prompt> ./segmentation.py -a 1m -p 32m
 ```
 
 如果要更具体一点，可以使用--b0，-l0，-b1和--l1寄存器自己设置基址寄存器和界限寄存器值。 试试看。
 
 最后,你可以运行
-```
+```shell script
 prompt> ./segmentation.py -h 
-
 ```
+
 获取所有参数
 
 Enjoy!

@@ -2,7 +2,7 @@
 是的，对于前一句中fun这个词的使用存在一些争议。
 运行程序:`paging-multilevel-translate.py`
 
-```
+```shell script
 paging-multilevel-translate.py
 ```
 
@@ -23,16 +23,16 @@ paging-multilevel-translate.py
 
 
 PTE的格式为：
-```
+<pre>
   VALID | PFN6 ... PFN0
-```
+</pre>
 因此是8位或1字节。
 
 
 PDE的格式本质上是相同的：
-```
+<pre>
   VALID | PT6 ... PT0
-```
+</pre>
 
 首先你有两条信息可以获取
 
@@ -42,12 +42,12 @@ PDE的格式本质上是相同的：
 (Second, you are given a complete dump of each page of memory. A page dump
 looks like this:) 
 
-```
+<pre>
     page 0: 08 00 01 15 11 1d 1d 1c 01 17 15 14 16 1b 13 0b ...
     page 1: 19 05 1e 13 02 16 1e 0c 15 09 06 16 00 19 10 03 ...
     page 2: 1d 07 11 1b 12 05 07 1e 09 1a 18 17 16 18 1a 01 ...
     ...
-```
+</pre>
 
 它显示了在第0、1、2等页上找到的32个字节。 
 页面0上的第一个字节（第0个字节）的值为0x08，第二个为0x00，第三个为0x01，依此类推。
@@ -60,11 +60,11 @@ looks like this:)
 当然，虚拟地址可能无效，因此会产生错误
 
 一些有用的参数
-```
+<pre>
   -s SEED, --seed=SEED       随机种子
   -n NUM, --addresses=NUM    生成虚拟地址数量
   -c, --solve                计算答案
-```
+</pre>
 
 一如既往地更改种子以获得不同的问题。
 

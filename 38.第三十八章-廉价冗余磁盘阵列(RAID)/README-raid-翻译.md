@@ -69,8 +69,8 @@ LOGICAL READ from addr:9 size:4096
 
 ```shell script
 prompt> ./raid.py -R 20 -n 5 -L 0 -c
-
 ```
+
 <pre>
 ...
 LOGICAL READ from addr:16 size:4096

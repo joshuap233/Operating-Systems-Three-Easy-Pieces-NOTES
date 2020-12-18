@@ -12,7 +12,7 @@
 
 这是我们将能够运行的示例代码片段：
 
-```
+```asm
 .main
 mov 2000, %ax   # get the value at the address
 add $1, %ax     # increment it
@@ -34,7 +34,7 @@ halt
 
 为了存储一个值，同样使用了 "mov" 指令，但是这次将参数反过来，例如：
 
-```
+```asm
   mov %ax, 2000
 ```
 
@@ -47,7 +47,7 @@ halt
 
 让我们运行模拟器，看看它们如何工作！ 假设上面的代码序列在文件`simple-race.s`中。
 
-```
+<pre>
 prompt> ./x86.py -p simple-race.s -t 1 
 
        Thread 0
@@ -57,7 +57,7 @@ prompt> ./x86.py -p simple-race.s -t 1
 1003 halt
 
 prompt> 
-```
+</pre>
 
 这里使用的参数指定程序（-p），线程数（-t 1）和中断周期，
 中断周期是唤醒调度程序并运行以切换到其他任务的频率。 
@@ -69,7 +69,7 @@ prompt>
 
 我们可以使用更详细的跟踪来更好地了解机器在执行过程中的状态变化:
 
-```
+<pre>
 prompt> ./x86.py -p simple-race.s -t 1 -M 2000 -R ax,bx
 
  2000      ax    bx          Thread 0
@@ -78,11 +78,11 @@ prompt> ./x86.py -p simple-race.s -t 1 -M 2000 -R ax,bx
     ?       ?     ?   1001 add $1, %ax
     ?       ?     ?   1002 mov %ax, 2000
     ?       ?     ?   1003 halt
-```
+</pre>
 
 糟糕！ 忘记了 -c 参数（它为你计算答案）。
 
-```
+<pre>
 prompt> ./x86.py -p simple-race.s -t 1 -M 2000 -R ax,bx -c
 
  2000      ax    bx          Thread 0
@@ -91,7 +91,7 @@ prompt> ./x86.py -p simple-race.s -t 1 -M 2000 -R ax,bx -c
     0       1     0   1001 add $1, %ax
     1       1     0   1002 mov %ax, 2000
     1       1     0   1003 halt
-```
+</pre>
 
 通过使用 -M 标志，我们可以跟踪内存位置（用逗号分隔的列表可以让您跟踪多个地址，例如2000,3000）； 
 通过使用 -R 标志，我们可以跟踪指定寄存器中的值。
@@ -102,7 +102,7 @@ prompt> ./x86.py -p simple-race.s -t 1 -M 2000 -R ax,bx -c
 
 您还需要了解一些其他说明，所以现在让我们开始吧。 这是循环的代码段：
 
-```
+```asm
 .main
 .top
 sub  $1,%dx
@@ -122,7 +122,7 @@ halt
 
 因此，我们像这样运行程序：
 
-```
+<pre>
 prompt> ./x86.py -p loop.s -t 1 -a dx=3 -R dx -C -c
 
    dx   >= >  <= <  != ==        Thread 0
@@ -140,7 +140,7 @@ prompt> ./x86.py -p loop.s -t 1 -a dx=3 -R dx -C -c
    -1   0  0  1  1  1  0  1001 test $0,%dx
    -1   0  0  1  1  1  0  1002 jgte .top
    -1   0  0  1  1  1  0  1003 halt
-```
+</pre>
 
 "-R dx"标志跟踪%dx的值； "-C"参数跟踪由"test"指令设置的条件代码的值。 
 最后，"-a dx=3"参数将%dx寄存器的值设置为3。
@@ -151,7 +151,7 @@ prompt> ./x86.py -p loop.s -t 1 -a dx=3 -R dx -C -c
 
 最后，我们进入一个更有趣的场景，即具有多个线程的竞争条件。 让我们先看一下代码：
 
-```
+```asm
 .main
 .top
 # critical section
@@ -171,7 +171,7 @@ halt
 
 在对循环计数器(以%bx为单位)进行递减之后的代码，测试它是否大于或等于零，如果是，则再次跳到最上面的临界区。
 
-```
+<pre>
 
 prompt> ./x86.py -p looping-race-nolock.s -t 2 -a bx=1 -M 2000 -c
 
@@ -192,14 +192,14 @@ prompt> ./x86.py -p looping-race-nolock.s -t 2 -a bx=1 -M 2000 -c
     2       0                            1004 test $0, %bx
     2       0                            1005 jgt .top
     2       0                            1006 halt
-```
+</pre>
 
 在这里，您可以看到每个线程运行了一次，并且每个线程都更新了地址2000处的共享变量，从而导致那里的计数为2。
 
 每当一个线程停止并且必须运行另一个线程时，插入"Halt;Switch"行。
 
 最后一个例子：在上面执行相同的操作，但是中断频率较小。 如下所示：
-```
+<pre>
 [mac Race-Analyze] ./x86.py -p looping-race-nolock.s -t 2 -a bx=1 -M 2000 -i 2
 
  2000          Thread 0                Thread 1
@@ -225,7 +225,7 @@ prompt> ./x86.py -p looping-race-nolock.s -t 2 -a bx=1 -M 2000 -c
     ?   1006 halt
     ?   ----- Halt;Switch -----  ----- Halt;Switch -----
     ?                            1006 halt
-```
+</pre>
 
 如您所见，我们通过"-i 2"参数指定每个线程每2条指令中断一次。 
 在整个运行过程中，内存 \[2000\]的值是多少？ 应该是什么？
@@ -236,7 +236,7 @@ prompt> ./x86.py -p looping-race-nolock.s -t 2 -a bx=1 -M 2000 -c
 
 所有可以模拟的指令是
 
-```
+<pre>
 mov immediate, register     # 移动值立即值至寄存器
 mov memory, register        #从内存加载到寄存器
 mov register, register      # 将值从一个寄存器移动到另一个寄存器
@@ -273,7 +273,7 @@ xchg register, memory       # 原子性的交换:
 yield                       # switch to the next thread in the runqueue
 
 nop                         # no op
-```
+</pre>
 
 Notes: 
 - 'immediate' 形如: $number
@@ -282,7 +282,7 @@ Notes:
 
 最后，这是模拟器的所有选项，可-h查看
 
-```
+<pre>
 
 Usage: x86.py [options]
 
@@ -315,12 +315,12 @@ Options:
   -H HEADERCOUNT, --headercount=HEADERCOUNT
                         how often to print a row header
   -c, --compute         计算结果
-```
+</pre>
 
 大多数参数是很容易理解的的。 使用-r会打开一个随机周期中断器（从-i指定为1到中断周期），这可以在家庭作业出现问题时带来更多乐趣。
 
 
-```
+<pre>
 -P 让您确切指定何时运行哪些线程；例如11000会指定线程1运行2条指令，然后将线程0运行3条指令，重复上述过程
     
 -L 指定在地址空间的何处加载代码。
@@ -333,7 +333,7 @@ Options:
    (otherwise they show up as question marks)
 
 -H lets you specify how often to print a row header (useful for long traces)
-```
+</pre>
 现在您已经具备了基础知识。 请阅读本章末尾的问题，以更深入地研究竞争情况和相关问题。
 
 

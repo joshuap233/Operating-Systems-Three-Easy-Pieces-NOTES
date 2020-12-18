@@ -7,6 +7,7 @@
 相反，我们将假定地址空间具有一个代码段，然后是一个固定大小（小）的栈，以及一个随即向下增长的堆，如下图所示。 
 在这种配置中，堆只有一个增长方向，即朝向地址空间的更高区域增长。
 
+<pre>
   -------------- 0KB
   |    Code    |
   -------------- 2KB
@@ -18,7 +19,7 @@
   -------------- 7KB
   |   (free)   |
   |     ...    |
-
+</pre>
 
 在图中，边界寄存器将设置为7KB，因为它表示地址空间的末尾。 
 在范围内任何地址均视为合法； 高于此值的范围，硬件将引发异常。
@@ -26,7 +27,7 @@
 要使用默认参数运行，请在命令行中输入`relocation.py`
 结果应该是这样的：
 
-```
+<pre>
 prompt> ./relocation.py 
 ...
 Base-and-Bounds register information:
@@ -45,14 +46,14 @@ For each virtual address, either write down the physical address it
 translates to OR write down that it is an out-of-bounds address 
 (a segmentation violation). For this problem, you should assume a 
 simple virtual address space of a given size.
-```
+</pre>
 
 如您所见，这个作业只是简单生成随机的虚拟地址。 
 您应该确定每个虚拟地址是否在范围内，如果是，则确定它转换到哪个物理地址。 
 使用-c（"为我计算答案"）可以为我们提供这些转换的结果，即它们是否有效以及有效的物理地址。 
 为了方便起见，所有数字均以十六进制和十进制给出。
 
-```
+<pre>
 prompt> ./relocation.py -c
 ...
 Virtual Address Trace
@@ -62,7 +63,7 @@ Virtual Address Trace
   VA  3: 0x019e (decimal:414) -> VALID: 0x00003220 (dec:12832)
   VA  4: 0x0322 (decimal:802) -> SEGMENTATION VIOLATION
 ]
-```
+</pre>
 
 在基地址为12418（十进制）的情况下，地址430在范围之内（即小于472的界限寄存器），
 因此转换为(430加12418或12848)的地址。
@@ -71,7 +72,7 @@ Virtual Address Trace
 
 您可以使用一些参数来控制正在发生的事情：
 
-```
+<pre>
 prompt> ./relocation.py -h
 Usage: relocation.py [options]
 
@@ -85,7 +86,7 @@ Options:
   -l LIMIT, --l=LIMIT   界限寄存器的值
   -c, --compute         计算结果
 ]
-```
+</pre>
 
 您可以控制虚拟地址空间的大小（-a），
 物理内存的大小（-p），

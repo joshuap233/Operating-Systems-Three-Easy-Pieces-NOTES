@@ -4,12 +4,12 @@
 
 编译代码片段中的任何一个（例如，一个名为“ foo.c”的）：
 
-```
+```shell script
 prompt> gcc -o foo foo.c -Wall -pthread
 ```
 
 接着使用下面的命令运行：
-```
+```shell script
 prompt> ./foo
 ```
 (可能有一些可选参数)

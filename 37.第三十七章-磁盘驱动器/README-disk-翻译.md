@@ -11,9 +11,8 @@
 
 我们首先指定一些请求列表。 让我们先开始一个单一请求：
 
-```
+```shell script
 prompt> disk.py -a 10
-
 ```
 
 **译者注：如果你看到以下错误提醒： please install the python-tk package**
@@ -21,18 +20,17 @@ prompt> disk.py -a 10
 
 你会看到下面的输出:
 
-```
+<pre>
 REQUESTS [br '10']
 
 For the requests above, compute the seek, rotate, and transfer times.
 Use -c or the graphical mode (-G) to see the answers.
-```
+</pre>
 
 为了能够计算该请求的查找，旋转和传输时间，您必须了解扇区布局，磁盘头的起始位置等的更多信息。 
 要查看许多此类信息，请以图形方式（-G）运行模拟器：
 
-```
-...
+```shell script
 prompt> disk.py -a 10 -G
 ```
 
@@ -58,7 +56,7 @@ prompt> disk.py -a 10 -G
 
 现在让我们看一个稍微复杂的例子：
 
-```
+```shell script
 prompt> disk.py -a 10,11 -G
 ```
 
@@ -68,18 +66,18 @@ prompt> disk.py -a 10,11 -G
 因此，搜索和旋转时间保持不变，但是请求的传输时间却增加了一倍。
 实际上，您可以在模拟器窗口的顶部看到这些总和。 它们还可以打印到控制台，如下所示：
 
-```
+<pre>
 ...
 Sector:  10  Seek:  0  Rotate:105  Transfer: 30  Total: 135
 Sector:  11  Seek:  0  Rotate:  0  Transfer: 30  Total:  30
 TOTALS      Seek:  0  Rotate:105  Transfer: 60  Total: 165
-```
+</pre>
 
 现在，让我们用一个寻道示例。 尝试以下请求：
 
-```
+<pre>
 prompt> disk.py -a 10,18 -G
-```
+</pre>
 
 要计算这将花费多长时间，您需要知道寻道将花费多长时间。 
 默认情况下，每条轨道之间的距离为 40 个距离单位，默认搜索速度为每单位时间移动 1 个距离单位。 
@@ -101,12 +99,12 @@ prompt> disk.py -a 10,18 -G
 因此，进入第 18 扇区的实际旋转延迟是 210 减 40，即 170 个时间单位。运行模拟器自己看看;
 注意，您可以在没有图形的情况下运行，并使用“-c”标志来只查看结果而不查看图形。
 
-```
+<pre>
 prompt> ./disk.py -a 10,18 -c
 ...
 Sector:  10  Seek:  0  Rotate:105  Transfer: 30  Total: 135
 Sector:  18  Seek: 40  Rotate:170  Transfer: 30  Total: 240
 TOTALS      Seek: 40  Rotate:275  Transfer: 60  Total: 375
-```
+</pre>
 
 您现在应该对模拟器的工作原理有一个基本的了解。 课后作业的问题将探讨一些不同的选项，以更好地帮助您建立磁盘实际工作方式的模型。

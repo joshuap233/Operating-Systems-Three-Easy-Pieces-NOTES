@@ -73,7 +73,7 @@ worker 为线程目标函数，调用 `vector_add` ，调用前 打印`printf("-
 </pre>
 
 看不怎么办？那就多调用几次，比如调用 50 次，总能看到:
-```
+```shell script
 for i in {1..50}                            
 do
 ./vector-deadlock -n 2 -l 1 -v
@@ -86,7 +86,7 @@ done
 有概率发生死锁，但不总是
 
 多调用几次，总能找到死锁的时候：
-```
+```shell script
 for i in {1..50}
 do
  ./vector-deadlock -d -n 2 -l 10000 -v
@@ -113,7 +113,7 @@ done
 5.现在，运行带有以下参数的代码：`-t -n 2 -l 100000 -d`。 
 代码需要多长时间才能运行完成？ 当您增加循环数或线程数时，总时间如何变化？
     
-```
+<pre>
 ❯ ./vector-global-order -t -n 2 -l 100000 -d
 Time: 0.05 seconds
 
@@ -122,11 +122,11 @@ Time: 0.09 seconds
 
 ❯ ./vector-global-order -t -n 4 -l 100000 -d
 Time: 0.25 seconds
-```
+</pre>
     
 6.如果打开并行标志（-p），会发生什么？ 当每个线程修改不同的 vectors（-p 启用）而不是在相同的 vectors 上运行时，您期望性能变化多少？
 
-```
+<pre>
 ❯ ./vector-global-order -t -n 2 -l 100000 -d -p
 Time: 0.03 seconds
 
@@ -135,7 +135,8 @@ Time: 0.03 seconds
 
 ❯ ./vector-global-order -t -n 4 -l 100000 -d -p
 Time: 0.04 seconds
-```
+</pre>
+
 多线程不需要竞争等待锁
 
 7.现在我们研究 `vector-try-wait.c`。 首先确保您理解代码。 第一个对互斥锁 trylock() 的调用有必要吗？ 
@@ -144,7 +145,7 @@ Time: 0.04 seconds
     这种方法有小概率造成活锁
     可以将第一个try_lock 替换为 Pthread_mutex_lock()，不会造成死锁
     
-```
+<pre>
 ❯ ./vector-try-wait -t -n 2 -l 100000 -d -p
 Retries: 0
 Time: 0.02 seconds
@@ -156,14 +157,14 @@ Time: 0.03 seconds
 ❯ ./vector-try-wait -t -n 4 -l 100000 -d -p
 Retries: 0
 Time: 0.03 seconds
-```
+</pre>
  
 8.现在让我们看一下`vector-avoid-hold-and-wait.c`。 这种方法的主要问题是什么？ 
 在使用 -p 和不使用 -p 的情况下，其性能与其他版本相比如何？
 
     锁太多，影响性能
 
-```
+<pre>
 ❯ ./vector-avoid-hold-and-wait -t -n 2 -l 100000 -d
 Time: 0.18 seconds
 
@@ -181,7 +182,7 @@ Time: 0.07 seconds
 
 ❯ ./vector-avoid-hold-and-wait -t -n 4 -l 100000 -d -p
 Time: 0.07 seconds
-```
+</pre>
 
 9.最后，让我们看一下 `vector-nolock.c`。 这个版本根本不使用锁； 它提供与其他版本完全相同的语义吗？ 为什么或者为什么不？
 
@@ -190,7 +191,7 @@ Time: 0.07 seconds
 10.当线程在相同的两个 vectors 上运行时（没有 -p 参数），以及每个线程在单独的 vectors 上工作时（-p），
 与其他版本进行比较。无锁版本的性能如何？
 
-```
+<pre>
 ❯ ./vector-nolock -t -n 2 -l 100000 -d
 Time: 0.35 seconds
 
@@ -208,4 +209,4 @@ Time: 0.10 seconds
 
 ❯ ./vector-nolock   -t -n 4 -l 100000 -d -p
 Time: 0.09 seconds
-```
+</pre>

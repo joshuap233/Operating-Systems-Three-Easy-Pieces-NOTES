@@ -1,8 +1,8 @@
 在本作业中，您将使用一个简单的程序（paging-linear-translate.py）来检查你是否了解简单的虚拟到物理地址转换如何与线性页表一起使用。 
 要运行该程序，请记住只输入程序的名称`./paging-linear-translate.py`，也可以输入`python pages-linear-translate.py`。 
 当使用-h（帮助）标志运行它时，您将看到：
-```
 
+<pre>
 Usage: paging-linear-translate.py [options]
 
 Options:
@@ -18,12 +18,12 @@ Options:
 -u USED, --used=USED    映射的有效百分比
 -v                      详细模式
 -c                      计算答案
-```
+</pre>
 
 
 首先不使用任何参数运行:
 
-```
+<pre>
 
 ARG seed 0
 ARG address space size 16k
@@ -54,7 +54,7 @@ Virtual Address Trace
 For each virtual address, write down the physical address it 
 translates to OR write down that it is an out-of-bounds 
 address (e.g., a segmentation fault).
-```
+</pre>
 
 
 
@@ -70,14 +70,13 @@ address (e.g., a segmentation fault).
 但是，如果使用详细标志（-v）运行，有时使用此模拟器会更容易。 
 此标志还将VPN（索引）打印到页表中。 在上面的示例中，使用-v标志运行：
 
-```
-
+<pre>
 Page Table (from entry 0 down to the max size)
   [       0]   0x8000000c
   [       1]   0x00000000
   [       2]   0x00000000
   [       3]   0x80000006
-```
+</pre>
 
 然后，你需要做的是使用此页表将打印结果中提供给您的虚拟地址转换为物理地址。
 让我们看第一个：`VA 0x3229`。 要将这个虚拟地址转换为物理地址，我们首先必须将其分解为虚拟页码和偏移量。
@@ -94,14 +93,14 @@ Page Table (from entry 0 down to the max size)
 
 要查看其余的解决方案（在自己计算完之后！），只需使用-c标志（一如既往）即可：
 
-```
+<pre>
 ...
 VA  0: 00003229 (decimal: 12841) --> 00006229 (25129) [VPN 3]
 VA  1: 00001369 (decimal:  4969) --> Invalid (VPN 1 not valid)
 VA  2: 00001e80 (decimal:  7808) --> Invalid (VPN 1 not valid)
 VA  3: 00002556 (decimal:  9558) --> Invalid (VPN 2 not valid)
 VA  4: 00003a1e (decimal: 14878) --> 00006a1e (27166) [VPN 3]
-```
+</pre>
 
 当然，您可以更改这些参数来产生更多有趣的问题。 使用-h标志运行程序，以查看有哪些选项：
 

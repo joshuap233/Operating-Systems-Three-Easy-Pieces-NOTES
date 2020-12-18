@@ -13,15 +13,10 @@
 然后，您需要查看一些不同的C程序：
 
 - main-race.c  一个简单的竞争条件
-
 - main-deadlock.c 一个简单的死锁
-                  
 - main-deadlock-global.c 死锁问题的解决方案
-
 - main-signal.c 一个简单的子/父信号示例
-
 - main-signal-cv.c 通过条件变量实现更有效的信号
-                   
 - mythreads.h 头文件, 包装了部分线程api, 使函数能检查错误并增加可读性
 
 使用这些程序，你现在可以回答教科书中的问题了。

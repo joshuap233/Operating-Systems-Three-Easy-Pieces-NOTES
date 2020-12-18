@@ -4,13 +4,13 @@
 
 然后，输入 ./mem ，加一个数字来运行它。 该数字是数组的大小（以MB为单位）。 因此，使用小型数组（大小为1 MB）运行：
 
-```
+```shell script
 prompt> ./mem 1
 ```
 
 使用更大的数组 (1 GB):
 
-```
+```shell script
 prompt> ./mem 1024
 ```
 
@@ -19,7 +19,7 @@ prompt> ./mem 1024
 
 下面是运行的输出实例：
 
-```
+<pre>
 prompt> ./mem 1000
 allocating 1048576000 bytes (1000.00 MB)
   number of integers in array: 262144000
@@ -29,7 +29,7 @@ loop 2 in 345.18 ms (bandwidth: 2897.07 MB/s)
 loop 3 in 345.23 ms (bandwidth: 2896.61 MB/s)
 ^C
 prompt> 
-```
+</pre>
 
 该程序首先告诉您它分配了多少内存（以字节，MB和整数形式），
 然后开始循环遍历数组。 第一个循环（在上面的示例中）花费了448毫秒； 因为该程序在不到半秒的时间内访问了1000 MB，所以计算的带宽刚好超过2000 MB/s（不足为奇）。
@@ -41,7 +41,7 @@ prompt>
 
 注意，当您使用较小的数组运行时，不会打印每个循环的性能数字。例如
 
-```
+<pre>
 prompt>  ./mem 1
 allocating 1048576 bytes (1.00 MB)
   number of integers in array: 262144
@@ -51,19 +51,19 @@ loop 1215 in 0.33 ms (bandwidth: 3030.57 MB/s)
 loop 1823 in 0.33 ms (bandwidth: 3039.35 MB/s)
 ^C
 prompt> 
-```
+</pre>
 
 在这种情况下，程序只打印输出的一个示例，这样就不会有太多的输出充满屏幕。
 
 
 代码本身很容易理解。一个重要的部分是内存分配:
-```
+<pre>
     // the big memory allocation happens here
     int *x = malloc(size_in_bytes);
-```
+</pre>
 
 然后主循环开始:
-```
+```c
     while (1) {
 	x[i++] += 1; // main work of loop done here.
 ```

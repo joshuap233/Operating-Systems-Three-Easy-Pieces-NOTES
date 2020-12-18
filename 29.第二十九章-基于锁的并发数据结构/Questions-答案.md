@@ -13,31 +13,31 @@
 2.现在，构建一个简单的并发计数器，并测量随着线程数量的增加，多次增加计数器所需的时间。 您正在使用的系统上有多少个CPU可用？ 这个数字是否会完全影响您的测量？
 
 运行:
-```
+```shell script
 cd 2 && python3 plot.py
 ```
 
 查看CPU信息:
-```
+```shell script
 cat /proc/cpuinfo
 ```
 
 
 3.接下来，构建一个 懒惰计数器(sloppy counter) 的版本。 根据线程数以及阈值来衡量其性能。 这些数字是否与您在本章中看到的一致？
 
-```
+```shell script
 cd 3 && python3 plot.py
 ```
 
 4.如本章所述，构建使用`and-over-hand`锁[MS04]的链表版本。 您应该先阅读 paper 以了解其工作原理，然后再实现它并且衡量其性能。 何时 基于`hand-over-hand`锁的链表 比 标准链表 更有效？
 
-```
+```shell script
 cd 4 && make && ./main
 ```
 
 5.选择你喜欢的数据结构，例如B树或其他稍微有趣的结构。 实现它，然后从简单的锁策略开始，例如单个锁。 随着并发线程数的增加来衡量其性能。
 
-```
+```shell script
 cd 5 && python3 plot.py
 ```
 

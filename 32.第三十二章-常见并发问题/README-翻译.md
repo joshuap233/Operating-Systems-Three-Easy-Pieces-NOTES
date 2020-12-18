@@ -40,13 +40,13 @@
 
 输入 "make" (读取 Makefile 文件) 来构建五个可执行文件 
 
-```
+```shell script
 prompt> make
 ```
 
 然后您只需输入名称即可运行程序：
 
-```
+```shell script
 prompt> ./vector-deadlock
 ```
 

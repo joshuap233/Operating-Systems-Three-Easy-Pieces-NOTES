@@ -2,12 +2,12 @@ mlfq.py可让您查看本章介绍的MLFQ调度程序的行为。
 和以前一样，可以使用随机种子使用它来为自己产生问题，也可以使用它来构建精心设计的实验，以了解MLFQ在不同情况下的工作方式。
 要运行该程序，请输入：
 
-```bash
+```shell script
 prompt> ./mlfq.py
 ```
 
 使用-h参数查看帮助：
-```
+<pre>
 Usage: mlfq.py [options]
 Options:
   -h, --help            显示此帮助信息并退出
@@ -35,18 +35,19 @@ Options:
                         其中x是开始时间，y是运行时间，z是作业I/O的频率
   -c                    compute answers for me
 ]
-```
+</pre>
 
 模拟器有几种使用方法。 
 一种方法是生成一些随机作业，并查看您是否可以确定MLFQ调度程序的工作方式。 
 例如，如果您想创建一个随机生成的三个作业，则只需输入：
 
-```
+```shell script
 prompt> ./mlfq.py -j 3
 ```
 
 然后您将看到指定的问题定义：
 
+<pre>
 Here is the list of inputs:
 OPTIONS jobs 3
 OPTIONS queues 3
@@ -56,17 +57,19 @@ OPTIONS 时间片长  作业0 为  10
 OPTIONS 提高整体优先级 0
 OPTIONS io时间 0
 OPTIONS IO后保持优先级 False
-
+</pre>
 
 对于每个作业，给出了三个特征值：
 startTime：该作业在什么时候进入系统
 runTime：任务完成所需的总CPU时间
 ioFreq：I/O需要ioTime时间来完成
 
+<pre>
 Job List:
   Job  0: startTime   0 - runTime  84 - ioFreq   7
   Job  1: startTime   0 - runTime  42 - ioFreq   2
   Job  2: startTime   0 - runTime  51 - ioFreq   4
+</pre>
 
 计算给定工作负载的跟踪结果。
 如果你愿意，还可以计算每个作业的响应时间和周转时间。
@@ -76,33 +79,34 @@ Job List:
 这将生成了三个作业的随机工作负载（如指定的）,使用默认设置与队列数量
 如果您再次使用（-c）参数运行，则会看到与上述相同的打印输出，以及以下内容：
 
-Execution Trace:
-
-[ time 0 ] JOB BEGINS by JOB 0
-[ time 0 ] JOB BEGINS by JOB 1
-[ time 0 ] JOB BEGINS by JOB 2
-[ time 0 ] Run JOB 0 at PRIORITY 2 [ TICKS 9 ALLOT 1 TIME 83 (of 84) ]
-[ time 1 ] Run JOB 0 at PRIORITY 2 [ TICKS 8 ALLOT 1 TIME 82 (of 84) ]
-[ time 2 ] Run JOB 0 at PRIORITY 2 [ TICKS 7 ALLOT 1 TIME 81 (of 84) ]
-[ time 3 ] Run JOB 0 at PRIORITY 2 [ TICKS 6 ALLOT 1 TIME 80 (of 84) ]
-[ time 4 ] Run JOB 0 at PRIORITY 2 [ TICKS 5 ALLOT 1 TIME 79 (of 84) ]
-[ time 5 ] Run JOB 0 at PRIORITY 2 [ TICKS 4 ALLOT 1 TIME 78 (of 84) ]
-[ time 6 ] Run JOB 0 at PRIORITY 2 [ TICKS 3 ALLOT 1 TIME 77 (of 84) ]
-[ time 7 ] IO_START by JOB 0
-IO DONE
-[ time 7 ] Run JOB 1 at PRIORITY 2 [ TICKS 9 ALLOT 1 TIME 41 (of 42) ]
-[ time 8 ] Run JOB 1 at PRIORITY 2 [ TICKS 8 ALLOT 1 TIME 40 (of 42) ]
-[ time 9 ] Run JOB 1 at PRIORITY 2 [ TICKS 7 ALLOT 1 TIME 39 (of 42) ]
-...
-
-Final statistics:
-  Job  0: startTime   0 - response   0 - turnaround 175
-  Job  1: startTime   0 - response   7 - turnaround 191
-  Job  2: startTime   0 - response   9 - turnaround 168
-
-  Avg  2: startTime n/a - response 5.33 - turnaround 178.00
-]
-
+<pre>
+    Execution Trace:
+    
+    [ time 0 ] JOB BEGINS by JOB 0
+    [ time 0 ] JOB BEGINS by JOB 1
+    [ time 0 ] JOB BEGINS by JOB 2
+    [ time 0 ] Run JOB 0 at PRIORITY 2 [ TICKS 9 ALLOT 1 TIME 83 (of 84) ]
+    [ time 1 ] Run JOB 0 at PRIORITY 2 [ TICKS 8 ALLOT 1 TIME 82 (of 84) ]
+    [ time 2 ] Run JOB 0 at PRIORITY 2 [ TICKS 7 ALLOT 1 TIME 81 (of 84) ]
+    [ time 3 ] Run JOB 0 at PRIORITY 2 [ TICKS 6 ALLOT 1 TIME 80 (of 84) ]
+    [ time 4 ] Run JOB 0 at PRIORITY 2 [ TICKS 5 ALLOT 1 TIME 79 (of 84) ]
+    [ time 5 ] Run JOB 0 at PRIORITY 2 [ TICKS 4 ALLOT 1 TIME 78 (of 84) ]
+    [ time 6 ] Run JOB 0 at PRIORITY 2 [ TICKS 3 ALLOT 1 TIME 77 (of 84) ]
+    [ time 7 ] IO_START by JOB 0
+    IO DONE
+    [ time 7 ] Run JOB 1 at PRIORITY 2 [ TICKS 9 ALLOT 1 TIME 41 (of 42) ]
+    [ time 8 ] Run JOB 1 at PRIORITY 2 [ TICKS 8 ALLOT 1 TIME 40 (of 42) ]
+    [ time 9 ] Run JOB 1 at PRIORITY 2 [ TICKS 7 ALLOT 1 TIME 39 (of 42) ]
+    ...
+    
+    Final statistics:
+      Job  0: startTime   0 - response   0 - turnaround 175
+      Job  1: startTime   0 - response   7 - turnaround 191
+      Job  2: startTime   0 - response   9 - turnaround 168
+    
+      Avg  2: startTime n/a - response 5.33 - turnaround 178.00
+    ]
+</pre>
 
 跟踪以毫秒为单位, 准确显示了调度程序决定执行的操作。 
 在此示例中，它从运行作业0 7毫秒开始，直到作业0发出I/O结束。
@@ -128,7 +132,7 @@ Final statistics:
 
 例如，如果您想重新创建图8.3中的示例，则可以如下指定作业列表：
 
-```
+```shell script
 prompt> ./mlfq.py --jlist 0,180,0:100,20,0 -q 10 
 ```
 
@@ -139,7 +143,7 @@ prompt> ./mlfq.py --jlist 0,180,0:100,20,0 -q 10
 最后，还有三有趣的参数。 
 如果将-B参数设置为非零值，则按如下方式每N毫秒将所有作业提升到优先级最高的队列：
 
-```
+```shell script
 prompt> ./mlfq.py -B N 
 ```
 

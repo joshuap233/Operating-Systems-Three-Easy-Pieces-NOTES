@@ -2,11 +2,11 @@ lottery.py程序允许你查看彩票调度策略的工作方式。
 与往常一样，有两个步骤可以运行该程序。
 首先，在没有-c标志的情况下运行：这将向你显示要解决的问题而没有给出答案。
 
-```
+<pre>
 prompt> ./lottery.py -j 2 -s 0
-```
+</pre>
 
-```
+<pre>
 ...
 Here is the job list, with the run time of each job: 
   Job 0 ( length = 8, tickets = 75 )
@@ -27,7 +27,7 @@ Random 618369
 Random 250506
 ]
 
-```
+</pre>
 
 当你以这种方式运行模拟器时，它首先会为你分配一些随机作业（此处长度为8和4），
 每个作业都有一定数量的彩票（分别为75和25）。
@@ -36,7 +36,7 @@ Random 250506
 
 使用-c参数运行可以准确显示你应该计算的内容：
 
-```
+<pre>
 prompt> ./lottery.py -j 2 -s 0 -c
 ...
 ** Solutions **
@@ -67,7 +67,7 @@ Random 250506 -> Winning ticket 6 (of 75) -> Run 0
   Jobs:  (* job:0 timeleft:1 tix:75 ) (  job:1 timeleft:0 tix:--- )
 --> JOB 0 DONE at time 12
 ]
-```
+</pre>
 
 从跟踪中可以看到，你应该做的是使用随机数来确定哪张彩票中奖。
 然后，给定中奖票，找出应该执行的工作。
@@ -83,22 +83,23 @@ Random 250506 -> Winning ticket 6 (of 75) -> Run 0
 下一个作业是作业1，因此我们找到了中奖者，因此我们以时间片长度(在本示例中为1）运行作业1。 
 所有这些都在打印输出中显示如下：
 
-```
+<pre>
 Random 511275 -> Winning ticket 75 (of 100) -> Run 1
   Jobs:  (  job:0 timeleft:8 tix:75 ) (* job:1 timeleft:4 tix:25 )
 ]
-```
+</pre>
 
 如您所见，第一行总结了发生的情况，第二行仅显示了整个作业队列，并带有*表示选择了哪个作业。
 
 模拟器还有其他一些选择，其中大多数应该是不言自明的。 
 最值得注意的是，-l/-jlist 参数可用于指定一组确切的作业及其彩票数，而不是始终使用随机生成的作业列表。
 
-```
+<pre>
 prompt> ./lottery.py -h
 Usage: lottery.py [options]
-```
+</pre>
 
+<pre>
 Options:
   -h, --help            
       帮助信息
@@ -118,5 +119,4 @@ Options:
       时间片长
   -c, --compute
       compute answers for me
-
-
+</pre>

@@ -14,7 +14,7 @@
 查看 pc-header.h 很有用，它包含所有这些不同主程序的公共代码，以便使用 Makefile 正确地构建代码。
 
 每个程序可以使用以下标志:
-```
+<pre>
   -l 每个生产者生产的数量
   -m 生产者/消费者共享的缓冲区大小
   -p 生产者数量
@@ -23,7 +23,7 @@
   -C <sleep string: how consumer should sleep at various points>
   -v [verbose flag: 追踪发生了什么并打印]
   -t [timing flag: 打印执行总时间]
-```
+</pre>
 
 前四个参数意思:
 
@@ -40,7 +40,7 @@
 字符串（string）参数的指定方式如下。例如，如果有三个生产者，睡眠字符串应该分别为每个生产者指定睡眠时间，
 并使用冒号作为分隔符。这三个生产者的睡眠字符参数看起来像这样：
 
-```
+```shell script
 sleep_string_for_p0:sleep_string_for_p1:sleep_string_for_p2 
 ```
 
@@ -49,7 +49,7 @@ sleep_string_for_p0:sleep_string_for_p1:sleep_string_for_p2
 特别是生产者代码。在此代码片段中，一个生产者线程循环一段时间，通过调用 do_fill() 将元素放入共享缓冲区中。
 在 do_fill() 函数周围有一些等待和信号代码，以确保当生产者试图将元素添加到缓冲区时缓冲区没有被填满。更多细节见本章。
 
-```
+```c
 
 void *producer(void *arg) {
     int id = (int) arg;
@@ -80,18 +80,18 @@ void *producer(void *arg) {
 
 首先，让我们构建代码
 
-```
+<pre>
 prompt> make
 gcc -o main-two-cvs-while main-two-cvs-while.c -Wall -pthread
 gcc -o main-two-cvs-if main-two-cvs-if.c -Wall -pthread
 gcc -o main-one-cv-while main-one-cv-while.c -Wall -pthread
 gcc -o main-two-cvs-while-extra-unlock main-two-cvs-while-extra-unlock.c 
   -Wall -pthread
-```
+</pre>
 
 现在我们可以运行:
 
-```
+```shell script
 prompt> ./main-two-cvs-while -l 3 -m 2 -p 1 -c 1 -v
 ```
 
@@ -153,12 +153,12 @@ u 标记显示 use_ptr 在指向哪里（这是下一个消费者获得值的地
 
 现在，让我们添加一些暂停来更改跟踪的行为。在这种情况下，假设我们要使生产者进入休眠状态，以便消费者可以先运行。 我们可以按以下方式完成此操作：
 
-```
+```shell script
 prompt> ./main-two-cvs-while -l 1 -m 2 -p 1 -c 1 -P 1,0,0,0,0,0,0 -C 0 -v
 ```
 
 结果：
-```
+<pre>
  NF             P0 C0
   0 [*---  --- ] p0
   0 [*---  --- ]    c0
@@ -177,7 +177,7 @@ prompt> ./main-two-cvs-while -l 1 -m 2 -p 1 -c 1 -P 1,0,0,0,0,0,0 -C 0 -v
   0 [ --- *--- ]    c1
   0 [ --- *--- ]    c2
  ...
-```
+</pre>
 
 如您所见，生产者在代码中执行到了 p0 标记处，然后从其睡眠字符串中获取了第一个值，值为 1，因此每生产者都睡了 1 秒，
 在睡眠之前线程尝试获取锁。因此消费者开始运行，获取锁，但发现队列为空，从而进入睡眠状态（释放锁）。

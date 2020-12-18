@@ -9,7 +9,7 @@
 对于 RAID-5，看看你是否可以找出左对称（left- symmetric）和左不对称（left-asymmetric）布局之间的区别。
 使用一些不同的随机种子，产生不同于上面的问题。
 
-```
+<pre>
 ❯ python2 raid.py -n 10 -L 5 -5 LS -c -W seq
 
 LOGICAL READ from addr:0 size:4096
@@ -55,7 +55,7 @@ LOGICAL READ from addr:8 size:4096
   read  [disk 3, offset 2]   
 LOGICAL READ from addr:9 size:4096
   read  [disk 1, offset 3] 
-```
+</pre>
 
 从上面读取的磁盘与偏移可以推测 left- symmetric）和 left-asymmetric 的物理磁盘布局：
 <pre>
@@ -68,7 +68,7 @@ left-symmetric      left-asymmetric
 
 2.与第一个问题一样，但这次使用 -C 来改变块的大小。大块的大小如何改变映射？
 
-```
+<pre>
 ❯ python2 raid.py -n 20 -L 5 -5 LS -c -W seq -C 8K
 ...
 LOGICAL READ from addr:0 size:4096
@@ -92,7 +92,7 @@ LOGICAL READ from addr:8 size:4096
 LOGICAL READ from addr:9 size:4096
   read  [disk 0, offset 3]  
 ... 
-```
+</pre>
 
 布局推测：
 <pre>
@@ -104,7 +104,7 @@ LOGICAL READ from addr:9 size:4096
 
 3.执行上述测试，但使用 r 标志来反转每个问题的性质。
 
-```
+<pre>
 ❯ python2 raid.py -n 12 -L 5 -5 LS -c -W seq -C 8K -r
 LOGICAL READ from addr:0 size:4096
   read  [disk 0, offset 0]   
@@ -130,7 +130,7 @@ LOGICAL READ from addr:10 size:4096
   read  [disk 1, offset 2] 
 LOGICAL READ from addr:11 size:4096
   read  [disk 1, offset 3] 
-```
+</pre>
 
 4.现在使用反转标志，但用-S标志增加每个请求的大小。尝试指定 8 KB、12 KB 和 16 KB 的大小，同时改变 RAID 级别。
 当请求的大小增加时，底层 IO 模式会发生什么？请务必在顺序工作负载上尝试此操作（-W sequential）。

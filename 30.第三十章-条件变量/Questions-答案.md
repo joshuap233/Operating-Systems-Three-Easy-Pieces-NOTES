@@ -8,7 +8,7 @@
 1.我们的第一个问题集中在 main-two-cvs-while.c（有效的解决方案）上。 
 首先，研究代码。 你认为你了解当你运行程序时会发生什么吗？
 
-```
+<pre>
 ❯ ./main-two-cvs-while -l 3 -m 2 -p 1 -c 1 -v
  NF             P0 C0 
   0 [*---  --- ]    c0
@@ -52,14 +52,14 @@
 
 Consumer consumption:
   C0 -> 3
-```
+</pre>
 
 2.指定一个生产者和一个消费者运行，并让生产者产生一些元素。 
 缓冲区大小从 1 开始，然后增加。随着缓冲区大小增加，程序运行结果如何改变？
 当使用不同的缓冲区大小(例如 -m 10)，生产者生产不同的产品数量(例如 -l 100)，
 修改消费者的睡眠字符串(例如 -C 0,0,0,0,0,0,1)，full_num 的值如何变化？
 
-```
+```shell script
 ./main-two-cvs-while -l 3 -m 1 -p 1 -c 1 -v
 ./main-two-cvs-while -l 3 -m 2 -p 1 -c 1 -v
 ./main-two-cvs-while -l 3 -m 3 -p 1 -c 1 -v

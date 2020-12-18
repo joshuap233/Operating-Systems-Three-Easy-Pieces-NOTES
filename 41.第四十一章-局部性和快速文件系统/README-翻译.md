@@ -6,7 +6,7 @@
 
 例如，运行：
 
-```
+```shell script
 prompt> ./ffs.py -f in.example1 -c
 ```
 
@@ -27,7 +27,7 @@ file /b/f 2
 模拟器的输出是所有现存文件和目录的 inodes 和数据块的位置。 
 例如，运行上面的命令，我们最终会看到（启用 -c 标志，以向您显示结果）：
 
-```
+<pre>
 prompt> ./ffs.py -f in.example1 -c
 
 num_groups:       10
@@ -57,7 +57,7 @@ group inodes     data
     9 ---------- ---------- ---------- ----------
 
 prompt>
-```
+</pre>
 
 输出的第一部分向我们展示了模拟器的各种参数，从创建的 FFS 柱面组的数量到一些策略详细信息。
 但是输出的主要部分是实际分配图：
@@ -83,7 +83,7 @@ group inodes     data
 
 如果要查看符号到文件名的映射，则应使用-M标志：
 
-```
+```shell script
 prompt> ./ffs.py -f in.example1 -c -M
 ```
 
@@ -110,7 +110,7 @@ f           21  /b/f           regular
 
 其余选项使您可以使用FFS和一些较小的变体。 他们是：
 
-```
+<pre>
 prompt> ./ffs.py -h
 Usage: ffs.py [options]
 
@@ -146,7 +146,7 @@ Options:
   -c, --compute         compute answers for me
 
 We'll explore more of these options in the homework.
-```
+</pre>
 
 
 

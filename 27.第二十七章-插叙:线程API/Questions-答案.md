@@ -92,15 +92,15 @@
 4.现在运行`helgrind`检查这段代码。 `Helgrind`报告什么？
  
 追踪:
-```
+```shell script
 make main-deadlock 
 valgrind --tool=helgrind ./main-deadlock 
 ```
 
 结果:
-```
+<pre>
 ==28961== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 7 from 7)
-```
+</pre>
    
  
 5.现在使用`main-deadlock-global.c`运行`helgrind`。 查看代码；
@@ -108,16 +108,16 @@ valgrind --tool=helgrind ./main-deadlock
   
 
 执行:
-```
+```shell script
 make main-deadlock-global
 valgrind --tool=helgrind ./main-deadlock-global
 ```
 
 执行结果:
 
-```
+<pre>
 ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 7 from 7)
-```
+</pre>
 
 `main-deadlock-global.c` 代码是没有问题的,但 valgrind 工具依然报错, 因此推断 `helgrind` 靠执行周期与上下文切换次数 判断死锁,因此,`helgrind` 并不能很好地判断死锁
 
@@ -126,7 +126,7 @@ ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 7 from 7)
 为什么这段代码效率低下？ （父线程最终会花时间做什么，特别是当子线程需要很长时间才能执行完成时？）
 
 执行:
-```
+```shell script
 make main-signal
 valgrind --tool=helgrind ./main-signal
 ```
@@ -134,12 +134,12 @@ valgrind --tool=helgrind ./main-signal
 
 7.现在在这个程序上运行`helgrind`。它报告什么?代码正确吗?
 
-```
+<pre>
 ==30421== Possible data race during write of size 1 at 0x52861A5 by thread #1
 ==30421==    by 0x109633: main (main-signal.c:17)
 ==30421==    by 0x1095CC: worker (main-signal.c:8)
 =30326== ERROR SUMMARY: 23 errors from 2 contexts (suppressed: 40 from 36)
-```
+</pre>
 
 竞争条件是 done 变量, 工具指示到 printf 去了, 
 
@@ -149,7 +149,7 @@ glibc 的 printf 函数是线程安全的函数,参考:[stackoverflow](https://s
 该版本使用条件变量来发送信号（并进行加锁）。 为什么此代码比以前的版本更好？ 是正确，还是性能，或两者兼而有之？
 
 执行:
-```
+```shell script
 make main-signal-cv
 valgrind --tool=helgrind ./main-signal-cv
 ```

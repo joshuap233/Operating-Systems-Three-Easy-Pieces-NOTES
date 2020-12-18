@@ -48,7 +48,7 @@ python2 disk.py  -a 10,11,12,13 -G
 FIFO: 7,30,8
 SSTF: 7,8,30
 
-```
+```shell script
 python2 disk.py -a 7,30,8 -c # 795
 python2 disk.py -a 7,30,8 -c -p SSTF # 375
 ```
