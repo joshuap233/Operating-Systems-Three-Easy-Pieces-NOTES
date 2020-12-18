@@ -13,7 +13,7 @@
   不同程序共有的全局变量
 
 - main-common.c
-  包含main() 函数（带有命令行参数解析），用于初始化两个 vectors，启动一些线程来访问它们
+  包含 main() 函数（带有命令行参数解析），用于初始化两个 vectors，启动一些线程来访问它们
   （通过调用 worker() 函数），然后等待 vector_add() 调用完成  
  
 在下面的文件中找到本次作业的不同版本。 每种版本都采用不同的方法来处理向量加法（ vector_add() ）中的并发。 
@@ -34,7 +34,7 @@
   这个版本的 vector_add() 通过在锁获取周围使用单个锁来确保它不会一直阻塞在持有锁并等待其他锁的模式中。
   
 - vector-nolock.c
-  这个版本的 vector_add() 不使用锁。 相反，它使用原子的 fetch-and-add 来实现vector_add() 例程。 
+  这个版本的 vector_add() 不使用锁。 相反，它使用原子的 fetch-and-add 来实现 vector_add() 例程。 
   其语义（结果）略有不同。
   
 
@@ -54,7 +54,7 @@ prompt> ./vector-deadlock
 
 -d                 
    该标志打开线程死锁的功能。 当您将 -d 传递给程序时，每个其他线程以不同的顺序调用 vector_add()，
-   例如，两个线程启用了 -d，线程 0 调用vector_add(v1，v2)，线程 1 调用 vector_add(v2，v1)
+   例如，两个线程启用了 -d，线程 0 调用 vector_add(v1，v2)，线程 1 调用 vector_add(v2，v1)
    
 -p
    该标志为每个线程提供了一组不同的 vectors 来调用 add()，而不仅仅是两个 vectors。 
