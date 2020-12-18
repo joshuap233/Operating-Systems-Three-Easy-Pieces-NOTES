@@ -7,8 +7,9 @@
 
 <br/>
 <br/>
-1.首先构建`main-race.c`.查看代码，以便您可以在代码中看到（非常明显的）数据竞争。 
-现在运行`helgrind`（通过输入`valgrind --tool=helgrind main-race`）来查看其追踪结果。 
+
+1.首先构建`main-race.c`,查看代码，以便您可以在代码中看到（非常明显的）数据竞争。 
+现在运行 `helgrind`（通过输入`valgrind --tool=helgrind main-race`）来查看其追踪结果。 
 它指向正确的代码行吗？ 它还能为您提供什么其他信息？
 
 输入`make main-race`构建,代码中的竞争条件很明显,多线程同时修改`balance`变量
@@ -78,6 +79,7 @@
 
 <br/>
 <br/>
+
 2.删除有问题的代码行之一会发生什么？ 现在，在一个共享变量的更新附近添加锁，然后在所有变量更新周围添加锁。 
 在每种情况下，`Helgrind`报告什么？
 
@@ -88,6 +90,7 @@
 
 <br/>
 <br/>
+
 3.现在让我们看一下`main-deadlock.c`. 查看代码。 代码中有一个死锁的问题（我们将在下一章中对此进行更深入的讨论）。 您知道它可能有什么问题吗？
  
 死锁情况: 
@@ -97,6 +100,7 @@
 
 <br/>
 <br/>
+
 4.现在运行`helgrind`检查这段代码。 `Helgrind`报告什么？
  
 追踪:
@@ -113,6 +117,7 @@ valgrind --tool=helgrind ./main-deadlock
  
 <br/>
 <br/>
+
 5.现在使用`main-deadlock-global.c`运行`helgrind`。 查看代码；
 它有和`main-deadlock.c`有一样的问题吗？ `Helgrind`是否应该报告相同的错误？ 对于`helgrind`之类的工具,结果说明了什么？
   
@@ -134,6 +139,7 @@ ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 7 from 7)
 
 <br/>
 <br/>
+
 6.接下来让我们看一下`main-signal.c`。 这段代码使用变量（done）来表示子进程已完成，并且父线程现在可以继续运行了。 
 为什么这段代码效率低下？ （父线程最终会花时间做什么，特别是当子线程需要很长时间才能执行完成时？）
 
@@ -146,6 +152,7 @@ valgrind --tool=helgrind ./main-signal
 
 <br/>
 <br/>
+
 7.现在在这个程序上运行`helgrind`。它报告什么?代码正确吗?
 
 <pre>
@@ -161,6 +168,7 @@ glibc 的 printf 函数是线程安全的函数,参考:[stackoverflow](https://s
 
 <br/>
 <br/>
+
 8.现在看一下`main-signal.c`稍微修改的版本:`main-signal-cv.c`。
 该版本使用条件变量来发送信号（并进行加锁）。 为什么此代码比以前的版本更好？ 是正确，还是性能，或两者兼而有之？
 
@@ -175,6 +183,7 @@ valgrind --tool=helgrind ./main-signal-cv
 
 <br/>
 <br/>
+
 9.再一次在`main-signal-cv.c`上运行`helgrind`。它报告错误吗?
 
 没有

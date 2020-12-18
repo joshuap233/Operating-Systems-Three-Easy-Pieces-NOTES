@@ -5,6 +5,7 @@ exercises and questions below.
 Questions
 <br/>
 <br/>
+
 1. First, open two separate terminal connections to the same machine, so that
 you can easily run something in one window and the other.
 Now, in one window, run vmstat 1, which shows statistics about machine
@@ -18,6 +19,7 @@ the numbers in the user time column make sense? How does this change
 when running more than one instance of mem at once?
 <br/>
 <br/>
+
 2. Let’s now start looking at some of the memory statistics while running mem.
 We’ll focus on two columns: swpd (the amount of virtual memory used) and
 free (the amount of idle memory). Run ./mem 1024 (which allocates 1024
@@ -28,6 +30,7 @@ when the program exits? Does the amount of free memory increase by the
 expected amount when mem exits?
 <br/>
 <br/>
+
 3. We’ll next look at the swap columns (si and so), which indicate how much
 swapping is taking place to and from the disk. Of course, to activate these,
 you’ll need to run mem with large amounts of memory. First, examine how
@@ -42,11 +45,13 @@ the first loop? How much data (total) are swapped in and out during the
 second, third, and subsequent loops? (do the numbers make sense?)
 <br/>
 <br/>
+
 4. Do the same experiments as above, but now watch the other statistics (such
 as CPU utilization, and block I/O statistics). How do they change when
 mem is running?
 <br/>
 <br/>
+
 5. Now let’s examine performance. Pick an input for mem that comfortably
 fits in memory (say 4000 if the amount of memory on the system is 8 GB).
 How long does loop 0 take (and subsequent loops 1, 2, etc.)? Now pick a size
@@ -59,12 +64,14 @@ the first loop compare to that of subsequent loops, for both the case where
 everything fits in memory and where it doesn’t?
 <br/>
 <br/>
+
 6. Swap space isn’t infinite. You can use the tool swapon with the -s flag to
 see how much swap space is available. What happens if you try to run mem
 with increasingly large values, beyond what seems to be available in swap?
 At what point does the memory allocation fail?
 <br/>
 <br/>
+
 7. Finally, if you’re advanced, you can configure your system to use different
 swap devices using swapon and swapoff. Read the man pages for details.
 If you have access to different hardware, see how the performance of swapping changes when swapping to a classic hard drive, a flash-based SSD, and

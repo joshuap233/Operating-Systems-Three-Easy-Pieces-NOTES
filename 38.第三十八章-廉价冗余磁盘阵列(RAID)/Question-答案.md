@@ -7,6 +7,7 @@
 
 <br/>
 <br/>
+
 1.使用模拟器执行一些基本的 RAID 映射测试。运行不同的级别（0、1、4、5），看看你是否可以找出一组请求的映射。
 对于 RAID-5，看看你是否可以找出左对称（left- symmetric）和左不对称（left-asymmetric）布局之间的区别。
 使用一些不同的随机种子，产生不同于上面的问题。
@@ -70,6 +71,7 @@ left-symmetric      left-asymmetric
 
 <br/>
 <br/>
+
 2.与第一个问题一样，但这次使用 -C 来改变块的大小。大块的大小如何改变映射？
 
 <pre>
@@ -108,6 +110,7 @@ LOGICAL READ from addr:9 size:4096
 
 <br/>
 <br/>
+
 3.执行上述测试，但使用 r 标志来反转每个问题的性质。
 
 <pre>
@@ -140,6 +143,7 @@ LOGICAL READ from addr:11 size:4096
 
 <br/>
 <br/>
+
 4.现在使用反转标志，但用-S 标志增加每个请求的大小。尝试指定 8 KB、12 KB 和 16 KB 的大小，同时改变 RAID 级别。
 当请求的大小增加时，底层 IO 模式会发生什么？请务必在顺序工作负载上尝试此操作（-W sequential）。
 对于什么请求大小，RAID-4 和 RAID-5 的 I0 效率更高？
@@ -160,6 +164,7 @@ python2 raid.py -n 12 -L 5 -W seq -S 16K -r -c
 
 <br/>
 <br/>
+
 5.使用模拟器的定时模式（-t）来估计 100 次随机读取到 RAID 的性能，同时改变 RAID 级别，使用 4 个磁盘。
 
 ```shell script
@@ -171,6 +176,7 @@ python2 raid.py -L 5 -t -n 100 -c -D 4 # 276.7
 
 <br/>
 <br/>
+
 6.按照上述步骤操作，但增加磁盘数量。随着磁盘数量的增加，每个 RAID 级别的性能如何变化？
 
 ![plot](./plot.jpg)
@@ -181,6 +187,7 @@ python3 plot.py -p plot.jpg# 生成图片
 
 <br/>
 <br/>
+
 7.执行上述操作，但全部用写入（-w 100），而不是读取。每个 RAID 级别的性能现在如何扩展你能否粗略估计完成 100 次随机写入所需的时间？
 
 ![plot](./plot-write.jpg)
@@ -191,6 +198,7 @@ python3 plot.py -w 100 -p plot-write.jpg # 生成图片
 
 <br/>
 <br/>
+
 8.最后一次运行定时模式，但是这次用顺序的工作负载（-W sequential）性能如何随 RAID 级别而变化，在读取与写入时有何不同？
 如何改变每个请求的大小？使用 RAID-4 或 RAID-5 时应该写入 RAID 大小是多少？
 
