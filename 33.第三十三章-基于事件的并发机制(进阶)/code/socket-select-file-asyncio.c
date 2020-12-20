@@ -11,25 +11,29 @@
 #include <unistd.h>
 #include <math.h>
 #include <limits.h>
+#include <fcntl.h>
 #include "common.h"
+#include <aio.h>
 
-
-#define MAX_MSG 512
+#define BUF_SIZE 4096
 #define PORT 8080
+#define N_AIO 10
 
 void *server();
 
 void *client();
 
-void read_from(int fd);
+char *read_from(int fd);
 
-void send_to(int fd, char *message);
+void send_file(int fd, char *filename);
+
 
 int main() {
 
     pthread_t s, c[10];
     Pthread_create(&s, NULL, server, NULL);
 //    Pthread_create(&c[0], NULL, client, NULL);
+//    Pthread_join(c[0], NULL);
 
     for (int i = 0; i < 10; ++i) {
         Pthread_create(&c[i], NULL, client, NULL);
@@ -38,7 +42,6 @@ int main() {
         Pthread_join(c[i], NULL);
     }
     Pthread_join(s, NULL);
-//    Pthread_join(c[0], NULL);
     return 0;
 }
 
@@ -48,11 +51,10 @@ _Noreturn void *server() {
     sockaddr_in_t info, client_info;
     socklen_t addrLen = sizeof(client_info);
 
-    // 初始化 info
+
     init_sockaddr_in(&info, PORT);
     FD_ZERO(&read_fds);
 
-    // 创建套接字并调用 bind 绑定
     socket_fd = make_server_socket(info);
     FD_SET(socket_fd, &read_fds);
 
@@ -75,10 +77,8 @@ _Noreturn void *server() {
                     FD_SET(new_socket_fd, &read_fds);
                     printf("connect\n");
                 } else {
-                    char message[] = "Server: Hi, this is server.\n";
-                    read_from(i);
-                    send_to(i, message);
-
+                    char *filename = read_from(i);
+                    send_file(i, filename);
                     close(i);
                     FD_CLR(i, &read_fds);
                 }
@@ -90,35 +90,56 @@ _Noreturn void *server() {
 
 void *client() {
     sockaddr_in_t info;
+    char buf[MAX_MSG];
+    int n_bytes;
     init_sockaddr_in(&info, PORT);
 
-    char message[] = "Client: Hi there\n";
+    char message[] = "./static/test.json";
+    int size = sizeof(message);
     int socket_fd = make_socket();
-    int error = connect(socket_fd, (struct sockaddr *) &info, sizeof(info));
-
-    if (error < 0) {
+    if (connect(socket_fd, (struct sockaddr *) &info, sizeof(info)) < 0) {
         err_exit("client connect\n");
     }
 
-    send_to(socket_fd, message);
-    read_from(socket_fd);
+    if (write(socket_fd, message, size) != size) {
+        err_exit("write");
+    }
+
+    while ((n_bytes = read(socket_fd, buf, MAX_MSG)) != 0) {
+        if (n_bytes < 0) {
+            err_exit("read");
+        } else {
+            printf("%s\n", buf);
+        }
+    }
+
     close(socket_fd);
     return NULL;
 }
 
-void read_from(int fd) {
-    char buf[MAX_MSG];
+char *read_from(int fd) {
+    char *buf = malloc(sizeof(MAX_MSG));
     int n_bytes = read(fd, buf, MAX_MSG);
     if (n_bytes < 0) {
         err_exit("read");
     } else {
-        printf("%s\n", buf);
+        return buf;
     }
 }
 
-void send_to(int fd, char *message) {
-    int size = sizeof(char) * (strlen(message) + 1);
-    if (write(fd, message, size) != size) {
-        err_exit("write");
+void send_file(int fd, char *filename) {
+    char buf[MAX_MSG];
+    int n_bytes, file;
+    if ((file = openat(AT_FDCWD, filename, O_RDONLY)) < 0) {
+        err_exit("open");
+    }
+
+    while ((n_bytes = read(file, buf, MAX_MSG)) != 0) {
+        if (n_bytes < 0) {
+            err_exit("file read");
+        }
+        if (write(fd, buf, MAX_MSG) < 0) {
+            err_exit("write");
+        }
     }
 }

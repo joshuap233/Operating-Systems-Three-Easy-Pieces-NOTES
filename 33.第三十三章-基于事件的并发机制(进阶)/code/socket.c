@@ -11,60 +11,39 @@
 #include <unistd.h>
 #include "common.h"
 
-typedef struct {
-    struct sockaddr_in server_info;
-    struct sockaddr_in client_info;
-} info_t;
+#define PORT 8080
 
-void *server(void *);
+void *server();
 
-void *client(void *);
+void *client();
 
 int main() {
     pthread_t s, c;
-    struct sockaddr_in server_info, client_info = {
-            .sin_family = PF_INET,
-            .sin_port = htons(8080),
-            .sin_addr.s_addr = inet_addr("127.0.0.1"),
-    };
 
-    // sin_zero 必须清零
-    bzero(&client_info.sin_zero, sizeof(client_info.sin_zero));
-
-    server_info = client_info;
-
-    info_t info = {
-            .server_info = server_info,
-            .client_info = client_info
-    };
-
-    Pthread_create(&s, NULL, server, (void *) &info);
-    Pthread_create(&c, NULL, client, (void *) &info);
+    Pthread_create(&s, NULL, server, NULL);
+    Pthread_create(&c, NULL, client, NULL);
     Pthread_join(s, NULL);
     Pthread_join(c, NULL);
     return 0;
 }
 
-_Noreturn void *server(void *arg) {
+_Noreturn void *server() {
+    sockaddr_in_t info, client_info;
+    init_sockaddr_in(&info, 8080);
+    init_sockaddr_in(&client_info, 8080);
     int socket_fd, new_socket_fd;
     char inputBuffer[256] = {};
-
-    info_t *info = (info_t *) arg;
-    struct sockaddr_in server_info = info->server_info;
-    struct sockaddr_in client_info = info->client_info;
 
     socklen_t addrLen = sizeof(client_info);
 
     char message[] = "Hi, this is server.\n";
-    socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-
+    socket_fd = make_server_socket(info);
 
     if (socket_fd == -1) {
         perror("socket");
         exit(1);
     }
 
-    assert(bind(socket_fd, (struct sockaddr *) &server_info, sizeof(server_info)) == 0);
     //最大连接数为5
     listen(socket_fd, 5);
     new_socket_fd = accept(socket_fd, (struct sockaddr *) &client_info, &addrLen);
@@ -80,19 +59,16 @@ _Noreturn void *server(void *arg) {
     }
 }
 
-_Noreturn void *client(void *arg) {
-    info_t *info = (info_t *) arg;
+_Noreturn void *client() {
+    sockaddr_in_t info;
+    init_sockaddr_in(&info, 8080);
+
     char message[] = "Hi there";
     char receiveMessage[100] = {};
-    struct sockaddr_in client_info = info->client_info;
 
-    int socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (socket_fd == -1) {
-        perror("socket");
-        exit(1);
-    }
+    int socket_fd = make_socket();
 
-    int error = connect(socket_fd, (struct sockaddr *) &client_info, sizeof(client_info));
+    int error = connect(socket_fd, (struct sockaddr *) &info, sizeof(info));
     if (error == -1) {
         perror("connect");
         exit(1);
