@@ -9,23 +9,32 @@
 <br/>
 <br/>
 
+构建:
+```shell script
+cd code && make
+```
+
 1.编写一个简短的名称为 check-xor.c 的 C 程序，使用基于异或(XOR)的校验和来对输入文件进行计算，并将校验和打印输出。 使用 8 位无符号字符存储（一个字节）校验和。 写一些测试文件，看看它是否按预期工作。
 
-
+```shell script
+./check-xor # 参数为文件名,忽略则校验 ./check 文件
+```
 
 <br/>
 <br/>
 
 2.编写一个简短的名称为 check-fletcher.c 的 C 程序，该程序计算输入文件的 Fletcher 校验和。 再次测试你的程序，看看它是否有效。
 
-
+```shell script
+./check-fletcher # 参数为文件名,忽略则校验 ./check 文件
+```
 
 <br/>
 <br/>
 
 3.现在比较两者的性能：其中一个比另一个快吗？ 随着输入文件大小的变化，性能如何变化？ 使用 gettimeofday 调用来计时。 哪个校验性能更好？ 哪个检查错误的能力更强？
 
-
+xor 更快, Fletcher 错误检查能力更强
 
 <br/>
 <br/>

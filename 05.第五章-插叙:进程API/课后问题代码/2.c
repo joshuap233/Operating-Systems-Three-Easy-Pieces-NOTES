@@ -11,7 +11,7 @@
 
 int main() {
   int pid = fork();
-  int fd = open("./test.txt", O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
+  int fd = open("./check.txt", O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
   if (pid < 0) {
     printf("fork error\n");
     exit(1);

@@ -52,6 +52,7 @@ prompt> ./vector-deadlock
 
 每个程序都使用相同的参数集（有关详细信息，请参见 main-common.c ）：
 
+<pre>
 -d                 
    该标志打开线程死锁的功能。 当您将 -d 传递给程序时，每个其他线程以不同的顺序调用 vector_add()，
    例如，两个线程启用了 -d，线程 0 调用 vector_add(v1，v2)，线程 1 调用 vector_add(v2，v1)
@@ -73,3 +74,4 @@ prompt> ./vector-deadlock
 -t
    打开计时器，并显示每件事所花费的时间。
 
+</pre>

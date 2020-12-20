@@ -589,9 +589,9 @@ class cpu:
                         self.memory[pc] = 'self.atomic_exchange(%d, %d, %d, %d)' % (src, int(tmp[0]), int(tmp[1]), int(tmp[2]))
                     else:
                         zassert(False, 'poorly specified atomic exchange')
-                elif opcode == 'test':
+                elif opcode == 'check':
                     rtmp = tmp[1].split(',', 1)
-                    zassert(len(tmp) == 2 and len(rtmp) == 2, 'test: needs two args, separated by commas [%s]' % cline)
+                    zassert(len(tmp) == 2 and len(rtmp) == 2, 'check: needs two args, separated by commas [%s]' % cline)
                     arg1 = rtmp[0].strip()
                     arg2 = rtmp[1].strip()
                     (src, stype) = self.getarg(arg1)
@@ -603,7 +603,7 @@ class cpu:
                     elif stype == 'TYPE_REGISTER' and dtype == 'TYPE_IMMEDIATE':
                         self.memory[pc] = 'self.test_r_i(%d, %d)' % (int(src), dst)
                     else:
-                        zassert(False, 'malformed usage of test instruction')
+                        zassert(False, 'malformed usage of check instruction')
                 elif opcode == 'j':
                     (targ, ttype) = self.getarg(tmp[1].strip())
                     zassert(ttype == 'TYPE_LABEL', 'bad jump target [%s]' % tmp[1].strip())
