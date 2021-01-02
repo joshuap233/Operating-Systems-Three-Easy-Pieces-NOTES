@@ -130,5 +130,5 @@ Options:
                         调度策略: SJF, FIFO, RR
   -q QUANTUM, --quantum=QUANTUM
                         RR策略的时间片长度
-  -c                    compute answers for me
+  -c                    计算答案
 </pre>

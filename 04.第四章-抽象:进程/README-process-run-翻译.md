@@ -43,7 +43,7 @@ Options:
                         IO结束时的行为类型: IO_RUN_LATER/IO_RUN_IMMEDIATE
                         - IO_RUN_IMMEDIATE: 立即切换到这个进程
                         - IO_RUN_LATER: 自然切换到这个进程(例如:取决于进程切换行为)
-  -c                    compute answers for me
+  -c                    计算结果
   -p, --printstats      打印统计数据； 仅与-c参数一起使用是有效
 </pre>
 

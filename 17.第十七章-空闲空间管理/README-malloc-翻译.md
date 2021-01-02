@@ -25,7 +25,7 @@ malloc.py 允许您查看简单的内存分配器的工作方式。 以下是您
                         分配空间的操作的百分比
   -A OPSLIST, --allocList=OPSLIST
                         不随机分配操作, 指定操作列表(+10,-0,etc)
-  -c, --compute         compute answers for me
+  -c, --compute         计算答案
 </pre>
 
 一种使用它的方法是让程序生成一些随机分配/释放(allocation/free)操作,

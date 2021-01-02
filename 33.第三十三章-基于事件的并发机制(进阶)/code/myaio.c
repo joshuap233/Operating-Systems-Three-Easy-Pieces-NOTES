@@ -1,54 +1,88 @@
 #include "myaio.h"
+#include "common.h"
 #include <aio.h>
-
-#define BUF_SIZE 4096
-#define N_AIO 10
-
-// 如何判断 socket 是否读到末尾呢?
-// 这里规定前发送端发送的四字节必须为接下来需要发送的数据长度
-
-// aiocb 状态
-enum aio_op {
-    UNUSED = 0,
-    READ_PENDING = 1,
-    WAITE_PENDING = 2
-};
-
-// 记录 aiocb 状态
-typedef struct aio_buf {
-    enum aio_op op;
-    int last; // 是否读取到末尾
-    struct aiocb aiocb;
-    unsigned char data[MAX_MSG];
-} aio_buf_t;
-
-typedef int aio_n; //记录正在进行的 aio 数量
+#include <string.h>
+#include <unistd.h>
 
 void init_aio_buf(aio_buf_t buf[], int buf_size) {
     for (int i = 0; i < buf_size; i++) {
         buf[i].op = UNUSED;
-        buf[i].last = 0;
+        buf[i].off = 0;
+        buf[i].finish = 0;
         buf[i].aiocb.aio_sigevent.sigev_notify = SIGEV_NONE;
         buf[i].aiocb.aio_buf = buf[i].data;
     }
 }
 
-void my_aio_read(aio_buf_t buf[], int fd) {
-    off_t off = 0; //已读取字节数
-    int data_size = 0; // 需要读取的数据长度(包括开头四字节)
+void my_aio_read(aio_buf_t buf[], int sock_fd) {
+    // buf[index].data 不会被重用,所有需要创建足够大的 buf
+    int off = 0; //已读取字节数
+    int data_size = 0; // 总共需要读取的数据长度(包括开头四字节)
+    aio_n an = 0;
+    int err;
+
 
     while (1) {
         for (int i = 0; i < N_AIO; i++) {
             switch (buf[i].op) {
                 case UNUSED:
-                    if (data_size != 0 && off < data_size) {
+                    // data_size 即还未开始或完成对 header 的读取
+                    if (data_size == 0 || off < data_size) {
                         buf[i].op = READ_PENDING;
-//                        buf[i].aiocb.aio_fildes =
+                        buf[i].aiocb.aio_fildes = sock_fd;
+
+                        // 当前 buf 第一次读取
+                        if (buf[i].finish == 0) {
+                            buf[i].finish = 0;
+                            buf[i].aiocb.aio_offset = off;
+                            buf[i].aiocb.aio_nbytes = MAX_MSG;
+                            off += MAX_MSG;
+                        } else {
+                            // 上次 没有读取完 MAX_MSG 字节,继续读取
+                            buf[i].aiocb.aio_nbytes = buf[i].off + buf[i].finish;
+                        }
+
+                        if (aio_read(&buf[i].aiocb) < 0)
+                            err_exit("aio_read");
+                        an++;
                     }
+                    break;
+                case READ_PENDING:
+                    // 正在读取
+                    if ((err = aio_error(&buf[i].aiocb)) == EINPROGRESS)
+                        continue;
+
+                    // 读取错误
+                    if (err != 0) {
+                        if (err == -1)
+                            err_exit("aio_error failed");
+                        else
+                            err_exit("read failed")
+                    }
+
+                    int n;
+                    // 读取完成
+                    // 获取读取完成结果出错或读取字节数为 0
+                    if ((n = aio_return(&buf[i].aiocb)) <= 0)
+                        err_exit("aio_return failed");
+
+                    buf[i].finish += n;
+
+                    if (i == 0) {
+                        memcpy(&data_size, buf[i].data, HEADER_LEN);
+                    }
+
+                    an--;
+                    buf[i].op = UNUSED;
+                    break;
             }
         }
-    }
 
+        // 所有 aio 已经读取完成
+        if (an == 0) {
+
+        }
+    }
 }
 
 int main() {

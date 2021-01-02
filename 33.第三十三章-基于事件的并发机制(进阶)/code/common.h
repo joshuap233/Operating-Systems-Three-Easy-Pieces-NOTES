@@ -8,6 +8,8 @@
 #include <pthread.h>
 #include <assert.h>
 #include <sys/socket.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #define Pthread_create(thread, attr, start_routine, arg) assert(pthread_create(thread, attr, start_routine, arg) == 0)
 

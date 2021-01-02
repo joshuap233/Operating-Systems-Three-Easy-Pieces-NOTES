@@ -12,12 +12,11 @@
 #include <math.h>
 #include <limits.h>
 #include <fcntl.h>
-#include "common.h"
 #include <aio.h>
+#include "common.h"
+#include "myaio.h"
 
-#define BUF_SIZE 4096
 #define PORT 8080
-#define N_AIO 10
 
 void *server();
 
@@ -50,8 +49,9 @@ _Noreturn void *server() {
     int socket_fd, new_socket_fd;
     sockaddr_in_t info, client_info;
     socklen_t addrLen = sizeof(client_info);
+    aio_buf_t buf[N_AIO];
 
-
+    init_aio_buf(buf, N_AIO);
     init_sockaddr_in(&info, PORT);
     FD_ZERO(&read_fds);
 
@@ -77,12 +77,14 @@ _Noreturn void *server() {
                     FD_SET(new_socket_fd, &read_fds);
                     printf("connect\n");
                 } else {
-                    char *filename = read_from(i);
-                    send_file(i, filename);
-                    close(i);
-                    FD_CLR(i, &read_fds);
+                    //TODO: my_aio_read 改为 write 并去掉 for 循环与,
+//                    char *filename = read_from(i);
+//                    send_file(i, filename);
+//                    close(i);
+//                    FD_CLR(i, &read_fds);
                 }
             }
+
         }
 
     }
