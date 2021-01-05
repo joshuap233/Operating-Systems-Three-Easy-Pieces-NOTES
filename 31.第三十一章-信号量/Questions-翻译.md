@@ -46,7 +46,7 @@ allowing one soon-to-be master to learn from an existing one。
 
 5.让我们再次看一下读者写者问题，但这一次需要考虑进程饥饿。 您如何确保所有读者和写者运行？ 有关详细信息，请参见 reader-writer-nostarve.c。
 
-6，使用信号量构建一个没有饥饿的互斥量，其中任何试图获取该互斥量的线程都将最终获得它。 有关更多信息，请参见 mutex-nostarve.c 中的代码。
+6.使用信号量构建一个没有饥饿的互斥量，其中任何试图获取该互斥量的线程都将最终获得它。 有关更多信息，请参见 mutex-nostarve.c 中的代码。
 
 <br/>
 <br/>

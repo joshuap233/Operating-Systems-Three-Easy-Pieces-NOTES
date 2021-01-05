@@ -52,5 +52,5 @@
 <br/>
 <br/>
 
-9. 再一次在`main-signal-cv.c`上运行`helgrind`。它报告错误吗?
+9.再一次在`main-signal-cv.c`上运行`helgrind`。它报告错误吗?
 
