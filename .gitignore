@@ -11,4 +11,5 @@ Notes/
 node_modules/
 yarn.lock
 package.json
+fix.py
 原书勘误.md
