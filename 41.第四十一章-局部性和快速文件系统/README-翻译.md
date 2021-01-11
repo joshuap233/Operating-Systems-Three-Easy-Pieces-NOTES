@@ -1,8 +1,6 @@
-这是 ffs.py 的 README 文件，它是 FFS 分配策略的模拟器。 
-使用它来研究在不同文件和目录创建方案下的 FFS 行为。 
+这是 ffs.py 的 README 文件，它是 FFS 分配策略的模拟器。 使用它来研究在不同文件和目录创建方案下的 FFS 行为。 
 
-通过使用 -f 标志指定命令文件来调用该工具，该命令文件由一系列的文件创建，
-文件删除和目录创建操作组成。
+通过使用 -f 标志指定命令文件来使用该工具，该命令文件由一系列的文件创建、文件删除和目录创建操作组成。
 
 例如，运行：
 
@@ -10,26 +8,25 @@
 prompt> ./ffs.py -f in.example1 -c
 ```
 
-查看第第一个示例输出来了解基于 FFS 的分配原理。
+来查看第一个示例的输出来了解基于 FFS 的工作原理。
 
 in.example1 中的文件由以下命令组成：
 
+```text
 dir /a
 dir /b
 file /a/c 2
 file /a/d 2
 file /a/e 2
 file /b/f 2
+```
 
-这告诉模拟器创建两个目录(/a and /b) 于四个文件(/a/c, /a/d, /a/e, and /b/f).
-根目录会自动创建.
+这告诉模拟器创建两个目录(/a and /b) 于四个文件(/a/c, /a/d, /a/e, and /b/f).根目录会自动创建.
 
-模拟器的输出是所有现存文件和目录的 inodes 和数据块的位置。 
-例如，运行上面的命令，我们最终会看到（启用 -c 标志，以向您显示结果）：
+模拟器的输出是所有现存文件和目录的 inodes 和数据块的位置。 例如，运行上面的命令，我们最终会看到（启用 -c 标志，以向您显示结果）：
 
-<pre>
+```text
 prompt> ./ffs.py -f in.example1 -c
-
 num_groups:       10
 inodes_per_group: 10
 blocks_per_group: 30
@@ -57,12 +54,15 @@ group inodes     data
     9 ---------- ---------- ---------- ----------
 
 prompt>
-</pre>
+```
+
 
 输出的第一部分向我们展示了模拟器的各种参数，从创建的 FFS 柱面组的数量到一些策略详细信息。
 但是输出的主要部分是实际分配图：
 
-      0000000000 0000000000 1111111111 2222222222plainplainplainplainplainplainplainplainplainplainplainplainplainplainplainplain
+```text
+
+      0000000000 0000000000 1111111111 2222222222
       0123456789 0123456789 0123456789 0123456789
 
 group inodes     data
@@ -76,20 +76,20 @@ group inodes     data
     7 ---------- ---------- ---------- ----------
     8 ---------- ---------- ---------- ----------
     9 ---------- ---------- ---------- ----------
+```
 
-对于这个示例，我们创建了一个具有 10 个组的文件系统，每个组具有 10 个 inode 和 30 个数据块。 
-每个组仅显示 inode 和数据块以及它们的分配方式。 如果它们是空闲的，则显示 -。
-否则，每个文件显示一个不同的符号。
 
-如果要查看符号到文件名的映射，则应使用-M 标志：
+对于这个示例，我们创建了一个具有 10 个组的文件系统，每个组具有 10 个 inode 和 30 个数据块。 每个组仅显示 inode 和数据块以及它们的分配方式。 如果它们是空闲的，则显示 -。否则，每个文件显示一个不同的符号。
+
+如果要查看符号到文件名的映射，则应使用 -M 标志：
 
 ```shell script
 prompt> ./ffs.py -f in.example1 -c -M
 ```
 
-然后，您将在输出的底部看到一个表格，其中显示了每个符号的含义：
+然后，您将在输出的底部看到一个表格，表格中显示了每个符号的含义：
 
-<pre>
+```text
 symbol  inode#  filename     filetype
 /            0  /            directory
 a           10  /a           directory
@@ -98,9 +98,11 @@ d           12  /a/d           regular
 e           13  /a/e           regular
 b           20  /b           directory
 f           21  /b/f           regular
-</pre>
+```
 
 在这里，您可以看到根目录由符号 / 表示，文件 /a 由符号 a 表示，依此类推。
+
+
 
 通过查看输出，您可以看到许多有趣的事情：
 - 根 inode 在 inode 表的 Group 0 的第一个插槽中
@@ -110,7 +112,7 @@ f           21  /b/f           regular
 
 其余选项使您可以使用 FFS 和一些较小的变体。 他们是：
 
-<pre>
+```text
 prompt> ./ffs.py -h
 Usage: ffs.py [options]
 
@@ -146,7 +148,8 @@ Options:
   -c, --compute         compute answers for me
 
 We'll explore more of these options in the homework.
-</pre>
+```
+
 
 
 

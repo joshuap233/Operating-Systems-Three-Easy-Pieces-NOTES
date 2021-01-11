@@ -1,4 +1,3 @@
-
 This is the README for ffs.py, a simulator of FFS allocation policies. Use it
 to study FFS behavior under different file and directory creation scenarios.
 
