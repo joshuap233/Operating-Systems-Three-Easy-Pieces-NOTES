@@ -10,23 +10,23 @@
 #include <unistd.h>
 
 int main() {
-  int pid = fork();
-  int fd = open("./check.txt", O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
-  if (pid < 0) {
-    printf("fork error\n");
-    exit(1);
-  } else if (pid == 0) {
-    char *buf = "child\n";
-    int error = write(fd, buf, sizeof(char) * strlen(buf));
-    printf("child error: %d\n", error == -1 ? 1 : 0);
+    int fd = open("./check.txt", O_CREAT | O_RDWR | O_TRUNC, S_IRWXU);
+    int pid = fork();
+    if (pid < 0) {
+        printf("fork error\n");
+        exit(1);
+    } else if (pid == 0) {
+        char *buf = "child\n";
+        int error = write(fd, buf, sizeof(char) * strlen(buf));
+        printf("child error: %d\n", error == -1 ? 1 : 0);
 
-  } else {
-    char *buf = "parent\n";
-    int error = write(fd, buf, sizeof(char) * strlen(buf));
-    printf("child error: %d\n", error == -1 ? 1 : 0);
+    } else {
+        char *buf = "parent\n";
+        int error = write(fd, buf, sizeof(char) * strlen(buf));
+        printf("child error: %d\n", error == -1 ? 1 : 0);
 
-    int wc = wait(NULL);
-    close(fd);
-  }
-  return 0;
+        int wc = wait(NULL);
+        close(fd);
+    }
+    return 0;
 }
